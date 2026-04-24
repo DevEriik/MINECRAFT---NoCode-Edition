@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
-
 @import "tailwindcss";
 
 @theme {
@@ -9,11 +7,12 @@
   --color-minecraft-stoneLight: #9e9e9e;
   --color-minecraft-stoneDark: #555555;
   --color-minecraft-diamond: #4AEEE2;
+  --color-minecraft-redstone: #ff3333;
+  --color-minecraft-amethyst: #a95eea;
+  --color-minecraft-cherry: #ff88bb;
   --color-minecraft-obsidian: #151121;
   --color-minecraft-textWhite: #ffffff;
   --color-minecraft-textBlack: #1f1f1f;
-
-  --font-pixel: "VT323", monospace;
 
   --shadow-block: inset -4px -4px 0px 0px rgba(0,0,0,0.5), inset 4px 4px 0px 0px rgba(255,255,255,0.5);
   --shadow-block-hover: inset -4px -4px 0px 0px rgba(0,0,0,0.7), inset 4px 4px 0px 0px rgba(255,255,255,0.7);
@@ -24,14 +23,13 @@
 @layer base {
   body {
     background-color: var(--color-minecraft-stone);
-    font-family: var(--font-pixel);
+    font-family: var(--font-mono); 
     color: var(--color-minecraft-textWhite);
-    font-size: 1.25rem;
-    letter-spacing: 0.1em;
+    font-size: 1.125rem; 
   }
 
   h1, h2, h3 {
-    text-shadow: 4px 4px 0px rgba(0, 0, 0, 0.7);
+    text-shadow: 4px 4px 0px rgba(0, 0, 0, 0.3);
   }
 }
 

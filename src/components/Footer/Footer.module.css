@@ -1,0 +1,71 @@
+@reference "../../index.css";
+
+.footerContainer {
+  @apply w-full bg-white border-t-4 border-black p-6 md:p-8 mt-auto font-mono;
+}
+
+.title {
+  @apply text-center text-lg md:text-2xl font-bold mb-8 uppercase tracking-wide text-black;
+  text-shadow: none; 
+}
+
+.teamCard {
+  @apply max-w-4xl mx-auto bg-[#f9f9f9] border-4 border-black p-4 md:p-6 flex flex-col;
+  box-shadow: 8px 8px 0px 0px var(--color-minecraft-grass);
+  border-bottom: 8px solid var(--color-minecraft-dirt);
+}
+
+.memberRow {
+  @apply flex flex-col sm:flex-row items-center justify-between py-4 border-b-4 border-dashed border-[#a3c9a3] last:border-b-0 gap-4 sm:gap-0 transition-colors hover:bg-white;
+}
+
+.memberInfo {
+  @apply flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left;
+}
+
+.avatarWrapper {
+  @apply w-16 h-16 border-4 border-black bg-white overflow-hidden flex items-center justify-center shrink-0 transition-transform duration-300 hover:scale-110 hover:border-[var(--color-minecraft-amethyst)];
+}
+
+.avatar {
+  @apply w-full h-full object-cover;
+  image-rendering: pixelated;
+}
+
+.nameContainer {
+  @apply flex flex-col;
+}
+
+.name {
+  @apply text-xl font-bold text-black;
+}
+
+.fai {
+  @apply text-sm text-gray-600;
+}
+
+.role {
+  @apply text-lg font-bold sm:border-l-4 sm:border-black sm:pl-6 text-center sm:text-right w-full sm:w-auto;
+  color: var(--color-minecraft-redstone); 
+}
+
+.bottomSection {
+  @apply max-w-4xl mx-auto mt-8 flex flex-col items-center gap-4;
+}
+
+.links {
+  @apply flex flex-col sm:flex-row justify-center gap-4 sm:gap-12;
+}
+
+.linkItem {
+  @apply flex items-center gap-2 text-gray-600 no-underline transition-all duration-200;
+}
+
+.linkItem:hover {
+  @apply underline translate-y-[-2px];
+  color: var(--color-minecraft-amethyst);
+}
+
+.credits {
+  @apply mt-4 text-gray-400 text-sm italic;
+}
