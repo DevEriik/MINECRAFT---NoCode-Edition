@@ -5,8 +5,6 @@ import Footer from "./Components/Footer/Footer";
 import "./i18n";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <BrowserRouter>
       <div className="min-h-screen flex flex-col">
