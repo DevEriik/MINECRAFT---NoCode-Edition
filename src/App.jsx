@@ -9,6 +9,15 @@ import "./i18n";
 function App() {
   return (
     <BrowserRouter>
+      {/* <Header /> */}
+      <main>
+        <Routes>
+          <Route path="/item/:id" element={<div>Pagina detalle</div>} />
+          <Route path="/favoritos" element={<div>Pagina favoritos</div>} />
+          <Route path="*" element={<div>Pagina ERROR</div>} />
+        </Routes>
+      </main>
+      {/* <Footer /> */}
       <div className="min-h-screen flex flex-col">
         <Header />
         <main className="flex-grow p-4 lg:p-8">

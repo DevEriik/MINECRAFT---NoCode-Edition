@@ -36,7 +36,7 @@ const Home = () => {
     }, [loading]);
 
     return (
-    <div className="bg-gray-300 min-h-screen w-full">
+    <div className="bg-[#1E1E1E] min-h-screen w-full">
     <div className="p-8 max-w-7xl mx-auto">
       
       <div className="mb-8 text-black border-4 border-black p-2 flex bg-white">
