@@ -1,0 +1,106 @@
+@reference "../../index.css";
+
+@keyframes sandFall {
+  0% {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  60% {
+    transform: translateY(10px);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+
+.sandLoading {
+  animation: sandFall 0.5s ease-in-out infinite alternate;
+  @apply w-16 h-16 bg-[#dbd3a0] border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center text-xs font-bold;
+}
+
+.detailsContainer {
+  @apply max-w-5xl mx-auto flex flex-col gap-6 font-mono p-6 rounded-lg;
+  animation: fadeIn 0.4s ease-out;
+  background-color: #8b8b8b;
+  background-image: radial-gradient(#9e9e9e 1px, transparent 1px);
+  background-size: 20px 20px;
+  box-shadow:
+    inset -4px -4px 0px 0px rgba(0, 0, 0, 0.4),
+    inset 4px 4px 0px 0px rgba(255, 255, 255, 0.4);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.topBar {
+  @apply flex justify-between items-center border-b-4 border-black pb-4;
+}
+
+.btnAction {
+  @apply border-4 border-black px-4 py-2 bg-white text-black font-bold text-lg hover:bg-gray-200 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all flex items-center gap-2;
+}
+
+.contentGrid {
+  @apply grid grid-cols-1 lg:grid-cols-2 gap-8 items-start;
+}
+
+.imageBox {
+  @apply relative p-8 flex items-center justify-center min-h-[300px] lg:min-h-[400px] transition-all duration-500 rounded-md;
+  background-color: rgba(30, 30, 30, 0.8);
+  border: 4px solid #555;
+  box-shadow: inset 0px 0px 20px rgba(0, 0, 0, 0.8);
+}
+
+.imageBox img {
+  @apply w-full h-64 object-contain;
+  image-rendering: pixelated; 
+  animation: floatItem 3s ease-in-out infinite;
+  filter: drop-shadow(0px 10px 5px rgba(0, 0, 0, 0.5));
+}
+
+@keyframes floatItem {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.imageBox:hover img {
+  @apply scale-110 drop-shadow-2xl transition-transform duration-300;
+}
+
+.statsGrid {
+  @apply grid grid-cols-2 gap-4 mt-6;
+}
+
+.statBox {
+  @apply bg-white p-3 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] flex flex-col justify-center transition-all duration-200;
+}
+.hoverCard {
+  @apply transition-transform duration-200;
+}
+
+.hoverCard:hover {
+  @apply -translate-y-2 shadow-[4px_8px_0px_0px_rgba(0,0,0,0.3)];
+}
+.statLabel {
+  @apply text-sm text-gray-500 uppercase font-bold mb-1;
+}
+.statValue {
+  @apply text-lg font-black text-gray-800 uppercase;
+}
