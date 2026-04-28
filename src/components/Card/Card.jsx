@@ -62,13 +62,24 @@ export const Card = ({item, onEliminar}) => {
                 <h3 className="text-black font-bold  tracking-tight border-b-2 border-gray-10 pb-1" style={{ textShadow: "none" }}>
                     NOMBRE: {item.name.toUpperCase()} 
                 </h3>
-                <div className="flex flex-col gap-1 flex-grow">
-                    <p className="text-[15px] font-bold text-gray-600 uppercase">
-                        <span className="text-black">COMPORTAMIENTO:</span> {item.behavior} </p>
-                    <p className="text-[15px] font-bold text-gray-500 uppercase">
-                        <span className="text-black">TAMAÑO:</span> {item.size} </p>
-                    <p className="text-[15px] text-gray-700 italic leading-tight border-t border-gray-300 pt-2">
-                        {item.description}</p>
+                <div className="flex flex-col gap-1 flex-grow overflow-hidden">
+                    <p className="text-[15px] font-bold text-gray-800 uppercase">
+                        <span className="text-black">
+                            {item.type === 'MOB' ? 'COMPORTAMIENTO: ' : 'UTILIDAD: '}
+                        </span> 
+                        {item.behavior} 
+                    </p>
+
+                    <p className="text-[15px] font-bold text-gray-800 uppercase">
+                        <span className="text-black">
+                            {item.type === 'MOB' ? 'TAMAÑO: ' : 'TIPO: '}
+                        </span> 
+                        {item.size} 
+                    </p>
+
+                    <p className="text-[17px] text-gray-700 leading-tight border-t border-gray-300 pt-2 overflow-y-auto pr-1 custom-scrollbar">
+                        {item.description}
+                    </p>
                 </div>
             </div>
 
