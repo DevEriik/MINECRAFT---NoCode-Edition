@@ -5,6 +5,7 @@ import Home from "./pages/Home/Home.jsx";
 import Header from "./components/Header/Header.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 import Details from "./pages/Details/Details.jsx";
+import NotFound from "./pages/NotFound/NotFound.jsx";
 import "./i18n";
 
 function App() {
@@ -18,14 +19,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/item/:id" element={<Details />} />
             <Route path="/favoritos" element={<Favorites />} />
-            <Route
-              path="*"
-              element={
-                <div className="font-mono text-center text-red-500 font-bold mt-10">
-                  Página no encontrada
-                </div>
-              }
-            />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
 
