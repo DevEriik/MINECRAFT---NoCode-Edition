@@ -7,26 +7,38 @@ const savedLanguage = localStorage.getItem("language") || "es";
 const resources = {
   en: {
     translation: {
-      "bestiary": "BESTIARY",
-      "home": "HOME",
-      "favorites": "FAVORITES",
-      "skin_creator": "SKIN CREATOR",
-      "footer_text": "Faculty of Informatics - Advanced Web Programming - TP 2 REACT 2026",
-      "role_pm": "Scrum Master / PM",
-      "role_dev": "Developer"
-    }
+      bestiary: "BESTIARY",
+      home: "HOME",
+      favorites: "FAVORITES",
+      skin_creator: "SKIN CREATOR",
+      footer_text:
+        "Faculty of Informatics - Advanced Web Programming - TP 2 REACT 2026",
+      role_pm: "Scrum Master / PM",
+      role_dev: "Developer",
+      errorText: "Oops! exploded",
+      buttonError: "Respawn in Lobby",
+      inventoryEmpty: "Your inventory is empty",
+      inventoryText:
+        "No mob or item has been added to the favorites collection",
+    },
   },
   es: {
     translation: {
-      "bestiary": "BESTIARIO",
-      "home": "INICIO",
-      "favorites": "FAVORITOS",
-      "skin_creator": "CREADOR DE SKINS",
-      "footer_text": "Facultad de Informática - Programación Web Avanzada - TP 2 REACT 2026",
-      "role_pm": "Scrum Master / PM",
-      "role_dev": "Desarrolladora"
-    }
-  }
+      bestiary: "BESTIARIO",
+      home: "INICIO",
+      favorites: "FAVORITOS",
+      skin_creator: "CREADOR DE SKINS",
+      footer_text:
+        "Facultad de Informática - Programación Web Avanzada - TP 2 REACT 2026",
+      role_pm: "Scrum Master / PM",
+      role_dev: "Desarrolladora",
+      errorText: "¡Ups! Explotó",
+      buttonError: "Reaparecer en Lobby",
+      inventoryEmpty: "Tu inventario esta vacío",
+      inventoryText:
+        "No se ha agregado ningún mob o item a la colección de favoritos",
+    },
+  },
 };
 
 i18n.use(initReactI18next).init({
