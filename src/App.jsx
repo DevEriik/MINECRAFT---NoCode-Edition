@@ -10,23 +10,21 @@ import "./i18n";
 function App() {
   return (
     <BrowserRouter>
-      {/* <Header /> */}
-      <main>
-        <Routes>
-          <Route path="/item/:id" element={<div>Pagina detalle</div>} />  
-          <Route path="/favoritos" element={<Favorites />} />
-          <Route path="*" element={<div></div>} />
-        </Routes>
-      </main>
-      {/* <Footer /> */}
       <div className="min-h-screen flex flex-col">
+        
         <Header />
+
         <main className="flex-grow p-4 lg:p-8">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/item/:id" element={<div>Pagina detalle</div>} />
+            <Route path="/favoritos" element={<Favorites />} />
+            <Route path="*" element={<Home />} />
           </Routes>
         </main>
+
         <Footer />
+        
       </div>
     </BrowserRouter>
   );
