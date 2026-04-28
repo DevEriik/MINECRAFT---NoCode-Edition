@@ -1,24 +1,15 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
-import { Favorites } from './pages/Favorites/Favorites';
-
+import { Favorites } from "./pages/Favorites/Favorites";
 import Home from "./pages/Home/Home.jsx";
 import Header from "./components/Header/Header.jsx";
 import Footer from "./components/Footer/Footer.jsx";
+import Details from "./pages/Details/Details.jsx";
 import "./i18n";
 
 function App() {
   return (
     <BrowserRouter>
-      {/* <Header /> */}
-      <main>
-        <Routes>
-          <Route path="/item/:id" element={<div>Pagina detalle</div>} />  
-          <Route path="/favoritos" element={<Favorites />} />
-          <Route path="*" element={<div></div>} />
-        </Routes>
-      </main>
-      {/* <Footer /> */}
       <div className="min-h-screen flex flex-col">
         <Header />
 
