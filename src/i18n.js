@@ -17,6 +17,9 @@ const resources = {
       role_dev: "Developer",
       errorText: "Oops! exploded",
       buttonError: "Respawn in Lobby",
+      inventoryEmpty: "Your inventory is empty",
+      inventoryText:
+        "No mob or item has been added to the favorites collection",
     },
   },
   es: {
@@ -31,6 +34,9 @@ const resources = {
       role_dev: "Desarrolladora",
       errorText: "¡Ups! Explotó",
       buttonError: "Reaparecer en Lobby",
+      inventoryEmpty: "Tu inventario esta vacío",
+      inventoryText:
+        "No se ha agregado ningún mob o item a la colección de favoritos",
     },
   },
 };
