@@ -31,7 +31,7 @@ const Header = () => {
           src={logoImage}
           alt="NoCodeCraft Logo"
           className="h-10 sm:h-12 md:h-14 w-auto object-contain drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]"
-          style={{ imageRendering: "pixelated" }}
+          
         />
       </Link>
 
@@ -41,12 +41,7 @@ const Header = () => {
           to="/"
           className="flex items-center gap-2 text-lg text-gray-700 hover:text-[var(--color-minecraft-grass)] uppercase tracking-wide cursor-pointer transition-transform hover:-translate-y-1"
         >
-          <img
-            src={iconoHome}
-            className="w-8 h-8"
-            style={{ imageRendering: "pixelated" }}
-            alt="Home"
-          />
+          <img src={iconoHome} className="w-8 h-8" alt="Home" />
           {t("home")}
         </Link>
 
@@ -59,7 +54,6 @@ const Header = () => {
             src={corazon}
             alt="Favoritos"
             className="w-8 h-8 object-contain"
-            style={{ imageRendering: "pixelated" }}
           />
           {t("favorites")}
         </Link>
@@ -72,7 +66,7 @@ const Header = () => {
           <img
             src={iconoSkin}
             className="w-8 h-8"
-            style={{ imageRendering: "pixelated" }}
+            
             alt="Skins"
           />
           {t("skin_creator")}
@@ -107,7 +101,7 @@ const Header = () => {
                 src={iconoHome}
                 alt="Home"
                 className="w-7 h-7 inline-block mr-2"
-                style={{ imageRendering: "pixelated" }}
+                
               />
               {t("home")}
             </Link>
@@ -120,7 +114,7 @@ const Header = () => {
                 src={corazon}
                 alt="Favoritos"
                 className="w-7 h-7 inline-block mr-2"
-                style={{ imageRendering: "pixelated" }}
+                
               />
               {t("favorites")}
             </Link>
@@ -129,7 +123,7 @@ const Header = () => {
                 src={iconoSkin}
                 alt="Skins"
                 className="w-7 h-7 inline-block mr-2"
-                style={{ imageRendering: "pixelated" }}
+                
               />
               {t("skin_creator")}
             </Link>
