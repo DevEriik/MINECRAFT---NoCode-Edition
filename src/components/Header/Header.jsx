@@ -4,16 +4,17 @@ import { useTranslation } from "react-i18next";
 import styles from "./Header.module.css";
 
 import logoImage from "../../assets/logo/logo-nocodeCraft.png";
+import corazon from "../../assets/corazonRojo/corazon.png";
+import iconoHome from "../../assets/icons/grass_block.png";
+import iconoSkin from "../../assets/icons/name_tag.png";
 
 const Header = () => {
   const { t, i18n } = useTranslation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // Función para alternar el idioma y guardarlo
   const toggleLanguage = () => {
     const currentLang = i18n.language || "es";
     const newLang = currentLang.startsWith("es") ? "en" : "es";
-
     i18n.changeLanguage(newLang);
     localStorage.setItem("language", newLang);
   };
@@ -29,35 +30,56 @@ const Header = () => {
         <img
           src={logoImage}
           alt="NoCodeCraft Logo"
-          className="h-10 sm:h-12 md:h-14 w-auto object-contain drop-shadow-md"
+          className="h-10 sm:h-12 md:h-14 w-auto object-contain drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]"
+          style={{ imageRendering: "pixelated" }}
         />
       </Link>
 
       <nav className="hidden lg:flex items-center gap-8">
-        <div className="flex items-center gap-2 text-lg text-gray-700 uppercase tracking-wide cursor-pointer focus-within:text-[var(--color-minecraft-diamond)] transition-colors">
-          <span>🔍</span>
-          <input
-            type="text"
-            placeholder={t("home")}
-            className="border-b-2 border-black bg-transparent px-2 py-1 outline-none text-lg placeholder-gray-500 focus:border-b-4 focus:border-[var(--color-minecraft-diamond)] transition-all"
-          />
-        </div>
-
+        {/* LINK HOME */}
         <Link
-          to="/favoritos"
-          className="flex items-center gap-2 text-lg text-gray-700 hover:text-[var(--color-minecraft-cherry)] uppercase tracking-wide cursor-pointer transition-colors"
+          to="/"
+          className="flex items-center gap-2 text-lg text-gray-700 hover:text-[var(--color-minecraft-grass)] uppercase tracking-wide cursor-pointer transition-transform hover:-translate-y-1"
         >
-          <span>🤍</span> {t("favorites")}
+          <img
+            src={iconoHome}
+            className="w-8 h-8"
+            style={{ imageRendering: "pixelated" }}
+            alt="Home"
+          />
+          {t("home")}
         </Link>
 
+        {/* LINK FAVORITOS */}
+        <Link
+          to="/favoritos"
+          className="flex items-center gap-2 text-lg text-gray-700 hover:text-[#ff3333] uppercase tracking-wide cursor-pointer transition-transform hover:-translate-y-1"
+        >
+          <img
+            src={corazon}
+            alt="Favoritos"
+            className="w-8 h-8 object-contain"
+            style={{ imageRendering: "pixelated" }}
+          />
+          {t("favorites")}
+        </Link>
+
+        {/* LINK SKIN CREATOR */}
         <Link
           to="/skins"
-          className="flex items-center gap-2 text-lg text-gray-700 hover:text-[var(--color-minecraft-amethyst)] uppercase tracking-wide cursor-pointer transition-colors"
+          className="flex items-center gap-2 text-lg text-gray-700 hover:text-[var(--color-minecraft-amethyst)] uppercase tracking-wide cursor-pointer transition-transform hover:-translate-y-1"
         >
-          <span>✒️</span> {t("skin_creator")}
+          <img
+            src={iconoSkin}
+            className="w-8 h-8"
+            style={{ imageRendering: "pixelated" }}
+            alt="Skins"
+          />
+          {t("skin_creator")}
         </Link>
       </nav>
 
+      {/* BOTÓN IDIOMA */}
       <div className="hidden lg:block">
         <button
           onClick={toggleLanguage}
@@ -67,39 +89,60 @@ const Header = () => {
         </button>
       </div>
 
+      {/* MENÚ HAMBURGUESA */}
       <button
-        className="lg:hidden border-4 border-black p-1 bg-white text-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"
+        className="lg:hidden w-12 h-12 flex items-center justify-center border-4 border-black bg-white text-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-1 active:translate-y-1 active:shadow-none transition-all"
         onClick={toggleMenu}
       >
-        <span className="text-2xl font-bold px-1">
-          {isMenuOpen ? "X" : "≡"}
+        <span className="text-3xl font-black leading-none mb-1">
+          {isMenuOpen ? "X" : "☰"}
         </span>
       </button>
 
       {isMenuOpen && (
         <div className={styles.mobileMenu}>
-          <div className="flex flex-col gap-4 border-b-2 border-dashed border-gray-300 pb-4">
-            <div className="flex items-center gap-2">
-              <span>🔍</span>
-              <input
-                type="text"
-                placeholder={t("home")}
-                className="w-full border-b-2 border-black outline-none py-1"
+          <div className="flex flex-col gap-4">
+            <Link to="/" className={styles.navItem} onClick={toggleMenu}>
+              <img
+                src={iconoHome}
+                alt="Home"
+                className="w-7 h-7 inline-block mr-2"
+                style={{ imageRendering: "pixelated" }}
               />
-            </div>
+              {t("home")}
+            </Link>
+            <Link
+              to="/favoritos"
+              className={styles.navItem}
+              onClick={toggleMenu}
+            >
+              <img
+                src={corazon}
+                alt="Favoritos"
+                className="w-7 h-7 inline-block mr-2"
+                style={{ imageRendering: "pixelated" }}
+              />
+              {t("favorites")}
+            </Link>
+            <Link to="/skins" className={styles.navItem} onClick={toggleMenu}>
+              <img
+                src={iconoSkin}
+                alt="Skins"
+                className="w-7 h-7 inline-block mr-2"
+                style={{ imageRendering: "pixelated" }}
+              />
+              {t("skin_creator")}
+            </Link>
           </div>
-          <Link to="/favoritos" className={styles.navItem} onClick={toggleMenu}>
-            🤍 {t("favorites")}
-          </Link>
-          <Link to="/skins" className={styles.navItem} onClick={toggleMenu}>
-            ✒️ {t("skin_creator")}
-          </Link>
-          <button
-            onClick={toggleLanguage}
-            className={`${styles.langButton} w-max mt-2`}
-          >
-            LANGUAGE: {i18n.language === "es" ? "ES / EN" : "EN / ES"}
-          </button>
+
+          <div className="border-t-4 border-black mt-4 pt-4">
+            <button
+              onClick={toggleLanguage}
+              className="border-4 border-black bg-white text-black px-4 py-2 font-bold w-full hover:bg-[var(--color-minecraft-grass)] hover:text-white transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+            >
+              LANGUAGE: {i18n.language === "es" ? "ES / EN" : "EN / ES"}
+            </button>
+          </div>
         </div>
       )}
     </header>
