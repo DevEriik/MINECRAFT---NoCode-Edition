@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { getItemById } from "../../services/getItemById";
 import styles from "./Details.module.css";
 
+import corazon from "../../assets/corazonRojo/corazon.png";
+
 const Details = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -98,9 +100,17 @@ const Details = () => {
           onClick={toggleFavorite}
           className="border-4 border-black px-4 py-2 bg-white text-black font-bold text-lg hover:bg-gray-200 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex items-center gap-2"
         >
-          <span className={isSaved ? "text-red-500" : "text-black"}>
-            {isSaved ? "♥" : "♡"}
-          </span>
+          {isSaved ? (
+            <img
+              src={corazon}
+              alt="Guardado en favoritos"
+              className="w-6 h-6 object-contain"
+              style={{ imageRendering: "pixelated" }}
+            />
+          ) : (
+            <span className="text-black font-bold">♡</span>
+          )}
+
           {isSaved ? "[ GUARDADO ]" : "[ GUARDAR ]"}
         </button>
       </div>
