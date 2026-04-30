@@ -63,7 +63,7 @@
 
 .imageBox img {
   @apply w-full h-64 object-contain;
-  image-rendering: pixelated; 
+  image-rendering: pixelated;
   animation: floatItem 3s ease-in-out infinite;
   filter: drop-shadow(0px 10px 5px rgba(0, 0, 0, 0.5));
 }

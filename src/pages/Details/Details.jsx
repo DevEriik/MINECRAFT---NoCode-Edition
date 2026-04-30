@@ -142,10 +142,10 @@ const Details = () => {
               className="text-xl font-bold flex items-center gap-2 mb-2 text-[#000000]"
               style={{ textShadow: "none" }}
             >
-              <span>📖</span> DESCRIPCIÓN
+              DESCRIPCIÓN:
             </h3>
             <p
-              className={`${styles.hoverCard} text-[#1f2937] text-lg leading-relaxed bg-[#ffffff] p-4 border-l-8 border-[#4AEEE2]`}
+              className={`${styles.hoverCard} text-[#1f2937] text-lg leading-relaxed bg-[#ffffff] p-4`}
             >
               {item.description}
             </p>
@@ -156,25 +156,26 @@ const Details = () => {
               className="text-xl font-bold flex items-center gap-2 mb-4 text-[#000000]"
               style={{ textShadow: "none" }}
             >
-              <span>📊</span> ESTADÍSTICAS
+              ESTADÍSTICAS:
             </h3>
-            <div className="grid grid-cols-2 gap-4">
+
+            <div className="flex flex-col gap-4">
               <div
-                className={`${styles.statBox} ${styles.hoverCard} ${item.type === "MOB" ? "border-l-[#4d924c]" : "border-l-[#ff3333]"}`}
+                className={`${styles.statBox} ${styles.hoverCard} bg-[#ffffff] p-4 border-l-8 ${item.type === "MOB" ? "border-[#4d924c]" : "border-[#ff3333]"}`}
               >
                 <span className={styles.statLabel}>Comportamiento</span>
                 <span className={styles.statValue}>{item.behavior}</span>
               </div>
 
               <div
-                className={`${styles.statBox} ${styles.hoverCard} border-l-[#4AEEE2]`}
+                className={`${styles.statBox} ${styles.hoverCard} bg-[#ffffff] p-4 border-l-8 border-[#4AEEE2]`}
               >
                 <span className={styles.statLabel}>Tamaño</span>
                 <span className={styles.statValue}>{item.size}</span>
               </div>
 
               <div
-                className={`${styles.statBox} ${styles.hoverCard} border-l-[#a95eea]`}
+                className={`${styles.statBox} ${styles.hoverCard} bg-[#ffffff] p-4 border-l-8 border-[#a95eea]`}
               >
                 <span className={styles.statLabel}>Tipo</span>
                 <span className={styles.statValue}>{item.type}</span>
