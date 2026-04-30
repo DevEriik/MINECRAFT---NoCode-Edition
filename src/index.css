@@ -1,12 +1,19 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "MineCrafter";
+  src: url("./assets/fonts/Minecrafter.Reg.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
 @theme {
   --color-minecraft-dirt: #866043;
   --color-minecraft-grass: #4d924c;
   --color-minecraft-stone: #7d7d7d;
   --color-minecraft-stoneLight: #9e9e9e;
   --color-minecraft-stoneDark: #555555;
-  --color-minecraft-diamond: #4AEEE2;
+  --color-minecraft-diamond: #4aeee2;
   --color-minecraft-redstone: #ff3333;
   --color-minecraft-amethyst: #a95eea;
   --color-minecraft-cherry: #ff88bb;
@@ -14,22 +21,41 @@
   --color-minecraft-textWhite: #ffffff;
   --color-minecraft-textBlack: #1f1f1f;
 
-  --shadow-block: inset -4px -4px 0px 0px rgba(0,0,0,0.5), inset 4px 4px 0px 0px rgba(255,255,255,0.5);
-  --shadow-block-hover: inset -4px -4px 0px 0px rgba(0,0,0,0.7), inset 4px 4px 0px 0px rgba(255,255,255,0.7);
-  --shadow-block-active: inset 4px 4px 0px 0px rgba(0,0,0,0.5), inset -4px -4px 0px 0px rgba(255,255,255,0.5);
+  --shadow-block:
+    inset -4px -4px 0px 0px rgba(0, 0, 0, 0.5),
+    inset 4px 4px 0px 0px rgba(255, 255, 255, 0.5);
+  --shadow-block-hover:
+    inset -4px -4px 0px 0px rgba(0, 0, 0, 0.7),
+    inset 4px 4px 0px 0px rgba(255, 255, 255, 0.7);
+  --shadow-block-active:
+    inset 4px 4px 0px 0px rgba(0, 0, 0, 0.5),
+    inset -4px -4px 0px 0px rgba(255, 255, 255, 0.5);
 }
 
 /* === ESTILOS BASE Y COMPONENTES === */
 @layer base {
   body {
     background-color: var(--color-minecraft-stone);
-    font-family: var(--font-mono); 
+    font-family: var(--font-mono);
     color: var(--color-minecraft-textWhite);
-    font-size: 1.125rem; 
+    font-size: 1.125rem;
   }
 
-  h1, h2, h3 {
+  h1,
+  h2,
+  h3 {
     text-shadow: 4px 4px 0px rgba(0, 0, 0, 0.3);
+  }
+
+  .minecraft-title {
+    font-family: "MineCrafter", sans-serif;
+    color: white;
+    text-shadow:
+      4px 4px 0px rgba(0, 0, 0, 1),
+      -2px -2px 0 #000,
+      2px -2px 0 #000,
+      -2px 2px 0 #000,
+      2px 2px 0 #000;
   }
 }
 
@@ -44,7 +70,7 @@
     font-size: 1.5rem;
     transition: all 100ms;
   }
-  
+
   .btn-minecraft:hover {
     box-shadow: var(--shadow-block-hover);
     filter: brightness(1.1);

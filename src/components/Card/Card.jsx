@@ -1,11 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useTransition } from "react";
 import { Link } from "react-router-dom";
 import { Notificacion } from "../Notificacion/Notificacion";
 import corazon from "../../assets/corazonRojo/corazon.png";
+import { Translation, useTranslation } from "react-i18next";
 
 export const Card = ({ item, onEliminar }) => {
   const [aviso, setAviso] = useState({ mensaje: "", tipo: "" });
   const [esFavorito, setEsFavorito] = useState(false);
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     const favGuardados = JSON.parse(localStorage.getItem("favoritos")) || [];
@@ -48,7 +50,7 @@ export const Card = ({ item, onEliminar }) => {
       to={`/item/${item.id}`}
       className="block w-full h-[540px] border-4 border-black p-4 bg-[#4B4B4B] flex flex-col overflow-hidden shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:bg-gray-500 transition-colors cursor-pointer"
     >
-      <div className="relative h-52 flex-shrink-0 bg-gray-100 flex items-center justify-center mb-4 border-4 border-black">
+      <div className="relative h-52 flex-shrink-0 bg-gray-500 flex items-center justify-center mb-4 border-4 border-black">
         <span
           className={`absolute top-1 left-1 px-3 py-1.5 text-[15px] font-black border-2 border-black ${item.type === "ITEM" ? "bg-[#2E7D32] text-white" : "bg-[#1565C0] text-white"}`}
         >
@@ -66,7 +68,7 @@ export const Card = ({ item, onEliminar }) => {
         )}
       </div>
 
-      <div className="bg-gray-100 p-3 h-[180px] flex flex-col gap-2 border-4 border-black mb-4">
+      <div className="bg-gray-100 p-3 h-[220px] flex flex-col gap-2 border-4 border-black mb-4">
         <h3
           className="text-black font-black tracking-tight border-b-4 border-black pb-1 text-lg uppercase"
           style={{ textShadow: "none" }}
@@ -97,7 +99,7 @@ export const Card = ({ item, onEliminar }) => {
       {esFavorito ? (
         <div
           onClick={manejarFavorito}
-          className="w-full mt-auto py-2 px-4 bg-white border-4 border-black flex items-center justify-center gap-2 cursor-pointer hover:bg-gray-200 transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
+          className="w-full mt-auto py-2 px-4 bg-[#3b3b3b] border-4 border-black flex items-center justify-center gap-2 cursor-pointer hover:bg-[#555] transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
         >
           <img
             src={corazon}
@@ -105,8 +107,8 @@ export const Card = ({ item, onEliminar }) => {
             className="w-6 h-6 object-contain"
             style={{ imageRendering: "pixelated" }}
           />
-          <span className="text-sm text-black font-black uppercase">
-            En Favoritos
+          <span className="text-sm text-white font-black uppercase">
+            {t("inFavorite")}
           </span>
         </div>
       ) : (
@@ -115,7 +117,7 @@ export const Card = ({ item, onEliminar }) => {
           className="w-full mt-auto py-2 px-4 bg-[#3b3b3b] border-4 border-black flex items-center justify-center gap-2 cursor-pointer hover:bg-[#555] transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
         >
           <span className="text-sm text-white font-black uppercase">
-            ♡ Agregar a favoritos
+            ♡ {t("textFavorite")}
           </span>
         </div>
       )}
