@@ -88,31 +88,37 @@ const Details = () => {
 
   return (
     <div className={styles.detailsContainer}>
-      <div className="flex justify-between items-center border-b-4 border-[#000000] pb-4 mb-4">
+      <div className="flex flex-wrap justify-center sm:justify-between items-center gap-3 border-b-4 border-[#000000] pb-4 mb-4">
         <button
           onClick={() => navigate(-1)}
-          className="border-4 border-[#000000] px-4 py-2 bg-[#ffffff] text-[#000000] font-bold text-lg hover:bg-gray-200 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex items-center gap-2"
+          className="border-4 border-[#000000] px-4 py-2 bg-[#ffffff] text-[#000000] font-bold text-lg hover:bg-gray-200 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex items-center gap-2 whitespace-nowrap"
         >
-          <span>{"<"}</span> [ ATRÁS ]
+          <span>{"<"}</span> <span className="hidden sm:inline">[ ATRÁS ]</span>
         </button>
-        <ExportPdfButton elementRef={captureRef} filename="Ficha-Minecraft" />
-        <button
-          onClick={toggleFavorite}
-          className="border-4 border-[#000000] px-4 py-2 bg-[#ffffff] text-[#000000] font-bold text-lg hover:bg-gray-200 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex items-center gap-2"
-        >
-          {isSaved ? (
-            <img
-              src={corazon}
-              alt="Guardado en favoritos"
-              className="w-6 h-6 object-contain"
-              style={{ imageRendering: "pixelated" }}
-            />
-          ) : (
-            <span className="text-[#000000] font-bold">♡</span>
-          )}
 
-          {isSaved ? "[ GUARDADO ]" : "[ GUARDAR ]"}
-        </button>
+        <div className="flex flex-wrap items-center gap-3">
+          <ExportPdfButton elementRef={captureRef} filename="Ficha-Minecraft" />
+
+          <button
+            onClick={toggleFavorite}
+            className="border-4 border-[#000000] px-4 py-2 bg-[#ffffff] text-[#000000] font-bold text-lg hover:bg-gray-200 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex items-center gap-2 whitespace-nowrap"
+          >
+            {isSaved ? (
+              <img
+                src={corazon}
+                alt="Guardado en favoritos"
+                className="w-6 h-6 object-contain"
+                style={{ imageRendering: "pixelated" }}
+              />
+            ) : (
+              <span className="text-[#000000] font-bold">♡</span>
+            )}
+
+            <span className="hidden sm:inline">
+              {isSaved ? "[ GUARDADO ]" : "[ GUARDAR ]"}
+            </span>
+          </button>
+        </div>
       </div>
 
       <div
