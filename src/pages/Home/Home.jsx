@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Hero from "../../Components/Hero/Hero";
+import Hero from "../../components/Hero/Hero";
 import { Card } from "../../components/Card/Card";
 import { getAllItems } from "../../services/getAllItems";
 
