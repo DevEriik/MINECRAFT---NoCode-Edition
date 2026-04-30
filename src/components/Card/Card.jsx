@@ -1,11 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useTransition } from "react";
 import { Link } from "react-router-dom";
 import { Notificacion } from "../Notificacion/Notificacion";
 import corazon from "../../assets/corazonRojo/corazon.png";
+import { Translation, useTranslation } from "react-i18next";
 
 export const Card = ({ item, onEliminar }) => {
   const [aviso, setAviso] = useState({ mensaje: "", tipo: "" });
   const [esFavorito, setEsFavorito] = useState(false);
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     const favGuardados = JSON.parse(localStorage.getItem("favoritos")) || [];
@@ -106,7 +108,7 @@ export const Card = ({ item, onEliminar }) => {
             style={{ imageRendering: "pixelated" }}
           />
           <span className="text-sm text-white font-black uppercase">
-            En Favoritos
+            {t("inFavorite")}
           </span>
         </div>
       ) : (
@@ -115,7 +117,7 @@ export const Card = ({ item, onEliminar }) => {
           className="w-full mt-auto py-2 px-4 bg-[#3b3b3b] border-4 border-black flex items-center justify-center gap-2 cursor-pointer hover:bg-[#555] transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
         >
           <span className="text-sm text-white font-black uppercase">
-            ♡ Agregar a favoritos
+            ♡ {t("textFavorite")}
           </span>
         </div>
       )}

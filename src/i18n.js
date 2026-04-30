@@ -32,6 +32,8 @@ const resources = {
       go_to: "GO TO",
       enter: "ENTER",
       close: "CLOSE",
+      textFavorite: "Add to favorites",
+      inFavorite: "In Favorites",
     },
   },
   es: {
@@ -61,6 +63,8 @@ const resources = {
       go_to: "IR A",
       enter: "ENTRAR",
       close: "CERRAR",
+      textFavorite: "Agregar a favoritos",
+      inFavorite: "En Favoritos",
     },
   },
 };
