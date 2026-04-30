@@ -102,7 +102,7 @@ export const Card = ({ item, onEliminar }) => {
       {esFavorito ? (
         <div
           onClick={manejarFavorito}
-          className="w-full mt-auto py-2 px-4 bg-[#3b3b3b] border-4 border-black flex items-center justify-center gap-2 cursor-pointer hover:bg-[#555] transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
+          className="w-full mt-auto py-2 px-4 bg-[var(--color-minecraft-grass)] border-4 border-black flex items-center justify-center gap-2 cursor-pointer hover:bg-[#555] transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
         >
           <img
             src={corazon}

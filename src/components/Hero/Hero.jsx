@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-import heroImg from "../../assets/hero/hero-background.png";
+import heroVideo from "../../assets/hero/hero-video.mp4";
 import iconEarth from "../../assets/icons/earth.png";
 import iconFavs from "../../assets/corazonRojo/corazon.png";
 import iconItems from "../../assets/icons/Diamond_Chestplate.png";
@@ -66,17 +66,27 @@ const Hero = () => {
 
   return (
     <>
-      <div className="relative w-screen max-w-[100vw] left-1/2 -translate-x-1/2 -mt-4 lg:-mt-8 overflow-hidden border-b-8 border-black mb-12">
+      <div className="relative w-screen max-w-[100vw] left-1/2 -translate-x-1/2 -mt-4 lg:-mt-8 overflow-hidden border-b-8 border-black mb-12 min-h-[450px] md:min-h-[600px]">
+        {/* ================= HERO VIDEO ================= */}
+        <video
+          src={heroVideo}
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none"
+        />
+
+        {/* ================= FILTRO ================= */}
+        <div className="absolute inset-0 bg-black/75 z-0 pointer-events-none"></div>
+
         <div
-          className={`flex w-[200%] transition-transform duration-700 ease-in-out ${
+          className={`relative z-10 flex w-[200%] transition-transform duration-700 ease-in-out h-full ${
             activePanel === "bestiary" ? "translate-x-0" : "-translate-x-1/2"
           }`}
         >
           {/* ================= PANEL 1: HERO ================= */}
-          <div
-            className="w-1/2 relative flex flex-col items-center justify-center px-4 min-h-[450px] md:min-h-[600px] bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url(${heroImg})` }}
-          >
+          <div className="w-1/2 relative flex flex-col items-center justify-center px-4 py-12">
             <div className="relative z-10 flex flex-col items-center w-full mt-8">
               <div className="bg-transparent z-10 cursor-default px-4 mb-10 md:mb-14">
                 <h1 className="minecraft-title text-5xl md:text-7xl lg:text-[6rem] uppercase text-center leading-[1.1] tracking-wider transition-transform duration-300 hover:scale-105">
@@ -103,7 +113,7 @@ const Hero = () => {
 
                 <button
                   onClick={() => setActivePanel("portal")}
-                  className="border-4 border-black bg-black text-white px-8 py-4 font-black uppercase flex items-center justify-center gap-4 hover:bg-gray-800 transition-all shadow-[6px_6px_0px_0px_rgba(0,0,0,0.3)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
+                  className="border-4 border-black bg-[#4d924c] text-white px-8 py-4 font-black uppercase flex items-center justify-center gap-4 hover:bg-[#3ed844] transition-all shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
                 >
                   {t("portal_table")} <span className="text-2xl">➔</span>
                 </button>
@@ -112,10 +122,7 @@ const Hero = () => {
           </div>
 
           {/* ================= PANEL 2: PORTAL TABLE ================= */}
-          <div
-            className="w-1/2 relative flex flex-col items-center justify-center py-12 px-4 md:py-16 min-h-[450px] md:min-h-[600px] bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url(${heroImg})` }}
-          >
+          <div className="w-1/2 relative flex flex-col items-center justify-center py-12 px-4 md:py-16">
             <div className="w-[95%] sm:w-full max-w-2xl flex flex-col items-center justify-center py-10 px-4 md:px-12 relative bg-white border-4 md:border-8 border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] md:shadow-[16px_16px_0px_0px_rgba(0,0,0,1)]">
               <h2
                 className="text-2xl md:text-4xl font-black uppercase tracking-widest mb-2 flex items-center gap-3 text-black text-center"
@@ -146,7 +153,7 @@ const Hero = () => {
                         isEmpty
                           ? "bg-gray-100 text-gray-300"
                           : "bg-white cursor-grab active:cursor-grabbing hover:bg-gray-50"
-                      } ${isDragging ? "opacity-30 scale-95" : "opacity-100 scale-100"}`} // Efecto visual al arrastrar
+                      } ${isDragging ? "opacity-30 scale-95" : "opacity-100 scale-100"}`}
                     >
                       {isEmpty ? (
                         <span className="font-bold text-[10px] md:text-xs tracking-widest opacity-50">
@@ -157,7 +164,7 @@ const Hero = () => {
                           <img
                             src={slot.icon}
                             alt={slot.title}
-                            className="w-10 h-10 md:w-16 md:h-16 object-contain mb-2 drop-shadow-md pointer-events-none" // pointer-events-none evita bugs al arrastrar imágenes
+                            className="w-10 h-10 md:w-16 md:h-16 object-contain mb-2 drop-shadow-md pointer-events-none"
                             style={{ imageRendering: "pixelated" }}
                           />
                           <span className="font-black text-[9px] md:text-xs uppercase tracking-wider text-black pointer-events-none">

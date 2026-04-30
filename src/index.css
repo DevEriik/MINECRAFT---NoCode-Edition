@@ -35,6 +35,7 @@
 /* === ESTILOS BASE Y COMPONENTES === */
 @layer base {
   body {
+    overflow-x: hidden;
     background-color: var(--color-minecraft-stone);
     font-family: var(--font-mono);
     color: var(--color-minecraft-textWhite);
