@@ -25,7 +25,7 @@ export const Favorites = () => {
   ).length;
 
   return (
-    <div className="min-h-screen bg-[#2b2b2b] p-8">
+    <div className="min-h-screen bg-[#1E1E1E] p-8">
       <h2 className="text-3xl font-bold text-white mb-6 border-b-4 border-gray-600 pb-2 inline-block uppercase tracking-wide">
         {t("favorites")}
       </h2>
@@ -43,7 +43,7 @@ export const Favorites = () => {
       ) : (
         <>
           {/* ================= PANEL DE ESTADÍSTICAS ================= */}
-          <div className="flex flex-col sm:flex-row gap-4 mb-8 bg-white border-4 border-black p-4 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] max-w-4xl">
+          <div className="flex flex-col sm:flex-row gap-4 mb-8 bg-[#333333] border-4 border-black p-4 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] max-w-4xl">
             {/* Total */}
             <div className="flex-1 border-4 border-black bg-gray-200 p-4 flex flex-col items-center justify-center shadow-inner transition-all duration-200 hover:-translate-y-2 hover:bg-gray-300">
               <span className="text-4xl md:text-5xl font-black text-black tracking-tighter">
@@ -55,7 +55,7 @@ export const Favorites = () => {
             </div>
 
             {/* Mobs */}
-            <div className="flex-1 border-4 border-black bg-[#1565C0] p-4 flex flex-col items-center justify-center transition-all duration-200 hover:-translate-y-2 hover:brightness-110">
+            <div className="flex-1 border-4 border-black bg-green-600 p-4 flex flex-col items-center justify-center transition-all duration-200 hover:-translate-y-2 hover:brightness-110">
               <span
                 className="text-4xl md:text-5xl font-black text-white tracking-tighter"
                 style={{ textShadow: "2px 2px 0 #000" }}
@@ -68,7 +68,7 @@ export const Favorites = () => {
             </div>
 
             {/* Ítems */}
-            <div className="flex-1 border-4 border-black bg-[#2E7D32] p-4 flex flex-col items-center justify-center transition-all duration-200 hover:-translate-y-2 hover:brightness-110">
+            <div className="flex-1 border-4 border-black bg-cyan-600 p-4 flex flex-col items-center justify-center transition-all duration-200 hover:-translate-y-2 hover:brightness-110">
               <span
                 className="text-4xl md:text-5xl font-black text-white tracking-tighter"
                 style={{ textShadow: "2px 2px 0 #000" }}

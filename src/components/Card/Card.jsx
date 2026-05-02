@@ -55,7 +55,7 @@ export const Card = ({ item, onEliminar }) => {
     >
       <div className="relative h-52 flex-shrink-0 bg-gray-500 flex items-center justify-center mb-4 border-4 border-black">
         <span
-          className={`absolute top-1 left-1 px-3 py-1.5 text-[15px] font-black border-2 border-black ${item.type === "ITEM" ? "bg-[#2E7D32] text-white" : "bg-[#1565C0] text-white"}`}
+          className={`absolute top-1 left-1 px-3 py-1.5 text-[15px] font-black border-2 border-black ${item.type === "ITEM" ? "bg-cyan-600 text-white" : "bg-green-600 text-white"}`}
         >
           {item.type}
         </span>
