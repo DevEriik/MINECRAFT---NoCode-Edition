@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
+import downloadIcon from "../../assets/icons/download.png";
 
 const ExportPdfButton = ({ elementRef, filename }) => {
   const [isGenerating, setIsGenerating] = useState(false);
@@ -40,7 +41,15 @@ const ExportPdfButton = ({ elementRef, filename }) => {
       disabled={isGenerating}
       className="order-last border-4 border-black px-4 py-2 bg-white text-black font-bold text-lg hover:bg-gray-200 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all flex items-center gap-2"
     >
-      {isGenerating ? "Generando..." : "[ 📥 PDF ]"}
+      <img
+        src={downloadIcon}
+        alt="Descargar PDF"
+        className="w-5 h-5 object-contain"
+        style={{ imageRendering: "pixelated" }}
+      />
+      <span className="hidden sm:inline">
+        {isGenerating ? "Generando..." : "[ PDF ]"}
+      </span>
     </button>
   );
 };
