@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import SkinCustomizer from "../../components/SkinCustomizer/SkinCustomizer";
-import imgCreeper from "../../assets/icons/Creeper_Head.png";
+import Alex from "../../assets/icons/alex_head.png";
 
 const CreateSkin = () => {
   const [currentSkin, setCurrentSkin] = useState({
