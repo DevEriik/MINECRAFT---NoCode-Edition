@@ -108,7 +108,7 @@ const Header = () => {
 
         {/* LINK SKIN CREATOR */}
         <Link
-          to="/skins"
+          to="/crear-skin"
           className={`group relative flex items-center gap-2 text-lg uppercase tracking-wide cursor-pointer transition-all duration-300 hover:-translate-y-1 pb-2 ${
             location.pathname === "/skins"
               ? "text-[var(--color-minecraft-amethyst)] font-black"
