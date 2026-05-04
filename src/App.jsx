@@ -11,10 +11,10 @@ import "./i18n";
 function App() {
   return (
     <BrowserRouter>
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen flex flex-col bg-[#091F22] w-full">
         <Header />
 
-        <main className="flex-grow p-4 lg:p-8">
+        <main className="flex-grow w-full ">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/item/:id" element={<Details />} />

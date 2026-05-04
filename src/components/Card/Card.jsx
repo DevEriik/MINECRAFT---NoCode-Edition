@@ -51,7 +51,7 @@ export const Card = ({ item, onEliminar }) => {
   return (
     <Link
       to={`/item/${item.id}`}
-      className="block w-full h-[540px] border-4 border-black p-4 bg-[#4B4B4B] flex flex-col overflow-hidden shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:bg-gray-500 transition-colors cursor-pointer"
+      className="block w-full h-[540px] border-4 border-black p-4 bg-gray-800 flex flex-col overflow-hidden shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:bg-gray-700 transition-colors cursor-pointer"
     >
       <div className="relative h-52 flex-shrink-0 bg-gray-500 flex items-center justify-center mb-4 border-4 border-black">
         <span
@@ -102,7 +102,7 @@ export const Card = ({ item, onEliminar }) => {
       {esFavorito ? (
         <div
           onClick={manejarFavorito}
-          className="w-full mt-auto py-2 px-4 bg-[var(--color-minecraft-grass)] border-4 border-black flex items-center justify-center gap-2 cursor-pointer hover:bg-[#555] transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
+          className="w-full mt-auto py-2 px-4 bg-green-800 border-4 border-black flex items-center justify-center gap-2 cursor-pointer hover:bg-[#444444] transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
         >
           <img
             src={corazon}
@@ -117,7 +117,7 @@ export const Card = ({ item, onEliminar }) => {
       ) : (
         <div
           onClick={manejarFavorito}
-          className="w-full mt-auto py-2 px-4 bg-[#3b3b3b] border-4 border-black flex items-center justify-center gap-2 cursor-pointer hover:bg-[#555] transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
+          className="w-full mt-auto py-2 px-4 bg-[#3b3b3b] border-4 border-black flex items-center justify-center gap-2 cursor-pointer hover:bg-[#444444] transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
         >
           <span className="text-sm text-white font-black uppercase">
             ♡ {t("textFavorite")}
