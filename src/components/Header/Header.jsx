@@ -106,11 +106,11 @@ const Header = () => {
           />
         </Link>
 
-        {/* LINK SKIN CREATOR */}
+        {/* LINK SKIN CREATOR (DESKTOP) */}
         <Link
           to="/crear-skin"
           className={`group relative flex items-center gap-2 text-lg uppercase tracking-wide cursor-pointer transition-all duration-300 hover:-translate-y-1 pb-2 ${
-            location.pathname === "/skins"
+            location.pathname === "/crear-skin"
               ? "text-[var(--color-minecraft-amethyst)] font-black"
               : "text-gray-700 hover:text-[var(--color-minecraft-amethyst)]"
           }`}
@@ -119,7 +119,7 @@ const Header = () => {
           {t("skin_creator")}
           <span
             className={`absolute bottom-0 left-0 w-full h-1 bg-[var(--color-minecraft-amethyst)] transition-transform duration-300 ease-out origin-center ${
-              location.pathname === "/skins"
+              location.pathname === "/crear-skin"
                 ? "scale-x-100"
                 : "scale-x-0 group-hover:scale-x-100"
             }`}
@@ -209,17 +209,19 @@ const Header = () => {
 
             {/* MOBILE SKINS */}
             <Link
-              to="/skins"
+              to="/crear-skin"
               onClick={toggleMenu}
               className={`relative overflow-hidden ${styles.navItem} transition-all duration-300 py-1 ${
-                location.pathname === "/skins"
+                location.pathname === "/crear-skin"
                   ? "text-[var(--color-minecraft-amethyst)] font-black pl-3 bg-gray-100"
                   : "text-gray-700 hover:pl-3"
               }`}
             >
               <span
                 className={`absolute left-0 top-0 w-1 h-full bg-[var(--color-minecraft-amethyst)] transition-transform duration-300 origin-top ${
-                  location.pathname === "/skins" ? "scale-y-100" : "scale-y-0"
+                  location.pathname === "/crear-skin"
+                    ? "scale-y-100"
+                    : "scale-y-0"
                 }`}
               />
               <img
