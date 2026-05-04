@@ -194,7 +194,7 @@ const Hero = ({ alBuscar, categoriaSeleccionada, setCategoriaSeleccionada, alFil
 
 
 {/* busqueda y filtros */}
-      <div className="w-full bg-[#1E1E1E] border-b-8 border-black py-8 mb-12 px-4 shadow-[inset_0px_8px_15px_rgba(0,0,0,0.5)]">
+      <div className="w-full bg-transparent border-b-8 border-black py-8 mb-12 px-4 shadow-[inset_0px_8px_15px_rgba(0,0,0,0.5)]">
         <div className="max-w-6xl mx-auto flex flex-col gap-4 font-mono">
           
           <div className="flex flex-col lg:flex-row gap-4 items-stretch">
@@ -214,7 +214,7 @@ const Hero = ({ alBuscar, categoriaSeleccionada, setCategoriaSeleccionada, alFil
               {/* botones */}
 
             <div className="flex gap-4 h-full">
-             <button
+              <button
                 onClick={() => setCategoriaSeleccionada && setCategoriaSeleccionada("Todos")}
                 className={`px-6 py-3 border-4 font-bold uppercase transition-all flex items-center gap-2 ${
                   categoriaSeleccionada === "Todos"
@@ -236,7 +236,7 @@ const Hero = ({ alBuscar, categoriaSeleccionada, setCategoriaSeleccionada, alFil
                 ⛏️ ITEMS
               </button>
 
-             <button
+              <button
                 onClick={() => setCategoriaSeleccionada && setCategoriaSeleccionada("MOB")}
                 className={`px-6 py-3 border-4 font-bold uppercase transition-all flex items-center gap-2 ${
                   categoriaSeleccionada === "MOB"
@@ -252,7 +252,7 @@ const Hero = ({ alBuscar, categoriaSeleccionada, setCategoriaSeleccionada, alFil
           {/* filtros */}
 
           {categoriaSeleccionada !== "Todos" && (
-            <div className="pt-4 border-t-2 border-dashed border-gray-500 flex gap-4 flex-wrap">
+            <div className="flex gap-6 flex-wrap">
               
               {categoriaSeleccionada === "ITEM" && (
                 <>
