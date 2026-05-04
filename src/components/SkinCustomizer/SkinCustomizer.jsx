@@ -13,6 +13,7 @@ const SkinCustomizer = ({ currentSkin, onUpdateSkin }) => {
             </span>
           </h3>
           {/* Cuadraditos */}
+
           <p className="text-sm text-[#9ca3af] mt-2">
             De mas claro a mas oscuro
           </p>
