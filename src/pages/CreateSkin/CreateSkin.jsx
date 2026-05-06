@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import SkinCustomizer from "../../components/SkinCustomizer/SkinCustomizer";
 import SkinPreview from "../../components/SkinPreview/SkinPreview";
+import ARBanner from "../../components/ARBanner/ARBanner";
 import Alex from "../../assets/icons/alex_head.png";
 
 const CreateSkin = () => {
@@ -37,13 +38,8 @@ const CreateSkin = () => {
             />
           </div>
         </div>
-
-        <div className="mt-12 bg-[#ffffff] p-6 border-4 border-[#000000] shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] flex flex-col lg:flex-row items-center justify-between gap-8">
-          <p className="text-gray-600 font-bold text-center">
-            [ Espacio para el Ticket de Abril ]<br />
-            <br />
-            Acá se hace el QR con los pasos y demas cosas
-          </p>
+        <div className="mt-12">
+          <ARBanner currentSkin={currentSkin} />
         </div>
       </div>
     </div>
