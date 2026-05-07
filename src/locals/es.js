@@ -61,4 +61,8 @@ export const es = {
   medium: "MEDIANO",
   large: "GRANDE",
   giant: "GIGANTE",
+  thisPage: "Esta página está",
+  underCons: "En Construcción",
+  disculpOne: "Disculpá las molestias, estamos picando código.",
+  disculpTwo: "¡Volvé en la próxima versión de la snapshot!",
 };

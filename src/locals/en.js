@@ -60,4 +60,8 @@ export const en = {
   medium: "MEDIUM",
   large: "LARGE",
   giant: "GIANT",
+  thisPage: "This page is",
+  underCons: "Under Construction",
+  disculpOne: "Sorry for the inconvenience, we are breaking code.",
+  disculpTwo: "Come back in the next version of the snapshot!",
 };
