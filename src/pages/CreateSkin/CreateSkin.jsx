@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import SkinCustomizer from "../../components/SkinCustomizer/SkinCustomizer";
 import SkinPreview from "../../components/SkinPreview/SkinPreview";
 import ARBanner from "../../components/ARBanner/ARBanner";
 import Alex from "../../assets/icons/alex_head.png";
 
 const CreateSkin = () => {
+  const { t } = useTranslation();
   const [currentSkin, setCurrentSkin] = useState({
     playerName: "",
     skinColor: "#FFD6A5",
@@ -19,13 +21,13 @@ const CreateSkin = () => {
           style={{ textShadow: "none" }}
         >
           <img src={Alex} alt="Alex" className="w-10 h-10 pixelated" />
-          Crea tu skin
+          {t("skin_creator")}
         </h1>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
 
           <div className="md:col-span-1">
-=            <SkinPreview
+            <SkinPreview
               currentSkin={currentSkin}
               onUpdateSkin={setCurrentSkin}
             />

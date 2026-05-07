@@ -1,6 +1,7 @@
 import React from "react";
 import { QRCodeSVG } from "qrcode.react";
 import grassBlock from "../../assets/icons/grass_block.png";
+import { useTranslation } from "react-i18next";
 
 const ARBanner = ({ currentSkin }) => {
   const baseUrl = "https://nocodecraft.com/";
@@ -17,7 +18,7 @@ const ARBanner = ({ currentSkin }) => {
 
   const creeperSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8"><rect width="8" height="8" fill="#D0E7E8"/><rect x="1" y="1" width="2" height="2" fill="#5A9144"/><rect x="5" y="1" width="2" height="2" fill="#5A9144"/><rect x="3" y="3" width="2" height="2" fill="#5A9144"/><rect x="2" y="4" width="1" height="2" fill="#5A9144"/><rect x="5" y="4" width="1" height="2" fill="#5A9144"/></svg>`;
   const creeperIcon = `data:image/svg+xml;utf8,${encodeURIComponent(creeperSvg)}`;
-
+  const { t } = useTranslation();
   return (
     <div className="w-full bg-[#ffffff] p-6 lg:p-8 border-4 border-[#000000] shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] flex flex-col lg:flex-row items-center gap-8 justify-between">
       {/* SECCIÓN IZQUIERDA: Título y texto */}
@@ -33,7 +34,7 @@ const ARBanner = ({ currentSkin }) => {
             className="text-xl md:text-2xl font-black text-black uppercase tracking-tighter mb-2 leading-none"
             style={{ textShadow: "none" }}
           >
-            Viví tu skin en Realidad Aumentada
+            {t("ar_title")}
           </h2>
           <p className="text-gray-700 font-bold text-sm md:text-base leading-tight">
             Escaneá el código QR con tu celular para ver tu personaje en 3D en
