@@ -7,7 +7,7 @@ import Footer from "./components/Footer/Footer.jsx";
 import Details from "./pages/Details/Details.jsx";
 import CreateSkin from "./pages/CreateSkin/CreateSkin.jsx";
 import NotFound from "./pages/NotFound/NotFound.jsx";
-import "./i18n";
+import "./locals/i18n"; 
 
 function App() {
   return (
