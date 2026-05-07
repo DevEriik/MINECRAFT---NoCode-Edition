@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import { toPng } from "html-to-image";
+import { useTranslation } from "react-i18next";
 
 import cabezaImg from "../../assets/skin/cabeza.png";
 import peloImg from "../../assets/skin/pelo.png";
@@ -11,6 +12,7 @@ import brazoIzquierdo from "../../assets/skin/brazoIzquierdo.png";
 import paisajeFondo from "../../assets/skin/fondo.png"
 
 const SkinPreview = ({ currentSkin, onUpdateSkin }) => {
+    const { t } = useTranslation();
     const previewRef = useRef(null);
     const manejarCambioNombre = (e) => {
         onUpdateSkin((prev) => ({
@@ -35,118 +37,118 @@ const descargarSkin = async () => {
 };
 
 return (
-    <div className="bg-[#ffffff] border-4 border-[#000000] p-6 flex flex-col min-h-[500px] shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] rounded-lg">
-        <h2 className="text-3xl font-bold text-black mb-4 ">VISTA PREVIA</h2>
-        <div className="mb-6">
-        <label className="block text-black font-bold text-gray-700 mb-2">
-            Nombre del jugador
-        </label>
-        <div className="flex items-center border-2 border-black rounded p-2 text-black">
-            <span>👤</span>
-            <input
-            type="text"
-            value={currentSkin.playerName}
-            onChange={manejarCambioNombre}
-            placeholder="MiJugador"
-            className="w-full outline-none"
+  <div className="bg-[#ffffff] border-4 border-[#000000] p-6 flex flex-col min-h-[500px] shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] rounded-lg">
+    <h2 className="text-3xl font-bold text-black mb-4 ">{t("preview")}</h2>
+    <div className="mb-6">
+      <label className="block text-black font-bold text-gray-700 mb-2">
+        {t("player_name")}
+      </label>
+      <div className="flex items-center border-2 border-black rounded p-2 text-black">
+        <span>👤</span>
+        <input
+          type="text"
+          value={currentSkin.playerName}
+          onChange={manejarCambioNombre}
+          placeholder={t("my_player", "MiJugador")}
+          className="w-full outline-none"
         />
-        </div>
+      </div>
     </div>
 
+    <div
+      ref={previewRef}
+      className="flex-grow flex items-center justify-center rounded border-2 border-dashed border-gray-500 relative overflow-hidden mb-6"
+      style={{
+        backgroundImage: `url(${paisajeFondo})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <div
+        className="flex flex-col items-center transition-all duration-300"
+        style={{ transform: `scale(${currentSkin.height / 50})` }}
+      >
         <div
-            ref={previewRef}
-            className="flex-grow flex items-center justify-center rounded border-2 border-dashed border-gray-500 relative overflow-hidden mb-6"
+          className="relative w-16 h-16 z-30"
+          style={{ backgroundColor: currentSkin.skinColor }}
+        >
+          <img
+            src={cabezaImg}
+            alt="Cara"
+            className="absolute inset-0 w-full h-full z-10"
+            style={{ imageRendering: "pixelated" }}
+          />
+          <div
+            className="absolute inset-0 w-full h-full z-40"
             style={{
-            backgroundImage: `url(${paisajeFondo})`,
-            backgroundSize: "cover", 
-            backgroundPosition: "center", 
+              backgroundColor: currentSkin.hairColor,
+              WebkitMaskImage: `url(${peloImg})`,
+              maskImage: `url(${peloImg})`,
+              WebkitMaskSize: "100% 100%",
+              maskSize: "100% 100%",
+              imageRendering: "pixelated",
             }}
-        >
-            <div
-            className="flex flex-col items-center transition-all duration-300"
-            style={{ transform: `scale(${currentSkin.height / 50})` }}
-            >
-            <div
-                className="relative w-16 h-16 z-30"
-                style={{ backgroundColor: currentSkin.skinColor }}
-            >
-                <img
-                src={cabezaImg}
-                alt="Cara"
-                className="absolute inset-0 w-full h-full z-10"
-                style={{ imageRendering: "pixelated" }}
-                />
-                <div
-                className="absolute inset-0 w-full h-full z-40"
-                style={{
-                    backgroundColor: currentSkin.hairColor,
-                    WebkitMaskImage: `url(${peloImg})`,
-                    maskImage: `url(${peloImg})`,
-                    WebkitMaskSize: "100% 100%",
-                    maskSize: "100% 100%",
-                    imageRendering: "pixelated",
-                }}
-                ></div>
-            </div>
-            <div className="flex flex-row w-32 h-24 z-20 relative">
-                <div
-                className="w-8 h-24"
-                style={{
-                    backgroundColor: currentSkin.skinColor,
-                    WebkitMaskImage: `url(${brazoIzquierdo})`,
-                    maskImage: `url(${brazoIzquierdo})`,
-                    WebkitMaskSize: "100% 100%",
-                    maskSize: "100% 100%",
-                    imageRendering: "pixelated",
-                }}
-                ></div>
-                <div
-                className="w-16 h-24"
-                style={{
-                    backgroundColor: currentSkin.skinColor,
-                    WebkitMaskImage: `url(${torsoImg})`,
-                    maskImage: `url(${torsoImg})`,
-                    WebkitMaskSize: "100% 100%",
-                    maskSize: "100% 100%",
-                    imageRendering: "pixelated",
-                }}
-                ></div>
-                <div
-                className="w-8 h-24"
-                style={{
-                    backgroundColor: currentSkin.skinColor,
-                    WebkitMaskImage: `url(${brazoDerecho})`,
-                    maskImage: `url(${brazoDerecho})`,
-                    WebkitMaskSize: "100% 100%",
-                    maskSize: "100% 100%",
-                    imageRendering: "pixelated",
-                }}
-                ></div>
-            </div>
-            <div
-                className="w-16 h-24 z-10 bg-gray-800"
-                style={{
-                backgroundColor: currentSkin.skinColor,
-                WebkitMaskImage: `url(${piernasImg})`,
-                maskImage: `url(${piernasImg})`,
-                WebkitMaskSize: "100% 100%",
-                maskSize: "100% 100%",
-                imageRendering: "pixelated",
-                }}
-            ></div>
-            </div>
+          ></div>
         </div>
+        <div className="flex flex-row w-32 h-24 z-20 relative">
+          <div
+            className="w-8 h-24"
+            style={{
+              backgroundColor: currentSkin.skinColor,
+              WebkitMaskImage: `url(${brazoIzquierdo})`,
+              maskImage: `url(${brazoIzquierdo})`,
+              WebkitMaskSize: "100% 100%",
+              maskSize: "100% 100%",
+              imageRendering: "pixelated",
+            }}
+          ></div>
+          <div
+            className="w-16 h-24"
+            style={{
+              backgroundColor: currentSkin.skinColor,
+              WebkitMaskImage: `url(${torsoImg})`,
+              maskImage: `url(${torsoImg})`,
+              WebkitMaskSize: "100% 100%",
+              maskSize: "100% 100%",
+              imageRendering: "pixelated",
+            }}
+          ></div>
+          <div
+            className="w-8 h-24"
+            style={{
+              backgroundColor: currentSkin.skinColor,
+              WebkitMaskImage: `url(${brazoDerecho})`,
+              maskImage: `url(${brazoDerecho})`,
+              WebkitMaskSize: "100% 100%",
+              maskSize: "100% 100%",
+              imageRendering: "pixelated",
+            }}
+          ></div>
+        </div>
+        <div
+          className="w-16 h-24 z-10 bg-gray-800"
+          style={{
+            backgroundColor: currentSkin.skinColor,
+            WebkitMaskImage: `url(${piernasImg})`,
+            maskImage: `url(${piernasImg})`,
+            WebkitMaskSize: "100% 100%",
+            maskSize: "100% 100%",
+            imageRendering: "pixelated",
+          }}
+        ></div>
+      </div>
+    </div>
 
-        <button
-            onClick={descargarSkin}
-            className="w-full bg-green-700 hover:bg-green-500 text-white font-bold py-3 px-4 border-b-4 border-[#3b6631] active:border-b-0 active:translate-y-[4px] rounded flex items-center justify-center gap-2 transition-all uppercase"
-        >
-            Descargar skin
-        </button>
-        <p className="text-center text-xs text-gray-500 mt-2">
-            Tu skin se descargará en formato PNG 
-        </p>
-        </div>
+    <button
+      onClick={descargarSkin}
+      className="w-full bg-green-700 hover:bg-green-500 text-white font-bold py-3 px-4 border-b-4 border-[#3b6631] active:border-b-0 active:translate-y-[4px] rounded flex items-center justify-center gap-2 transition-all uppercase"
+    >
+      {t("download_skin")}
+    </button>
+    <p className="text-center text-xs text-gray-500 mt-2">
+      {t("download_png_text")}
+    </p>
+  </div>
 );
 };
 export default SkinPreview;

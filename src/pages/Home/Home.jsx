@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import Hero from "../../components/Hero/Hero";
+import Searcher from "../../components/Searcher/Searcher";
 import { Card } from "../../components/Card/Card";
 import { getAllItems } from "../../services/getAllItems";
 
@@ -8,13 +10,39 @@ const Home = () => {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("Todos");  
+  const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("Todos");
   const [subBehavior, setSubBehavior] = useState("");
   const [subSize, setSubSize] = useState("");
 
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const filter = params.get("filter");
+
+    if (filter === "items") {
+      setCategoriaSeleccionada("ITEM");
+    } else if (filter === "mobs") {
+      setCategoriaSeleccionada("MOB");
+    } else {
+      setCategoriaSeleccionada("Todos");
+    }
+
+    setPage(1);
+  }, [location.search]);
+
   const loadItems = async () => {
     setLoading(true);
-    const newItems = await getAllItems(page, 10, searchTerm, categoriaSeleccionada, subBehavior, subSize);
+    const newItems = await getAllItems(
+      page,
+      10,
+      searchTerm,
+      categoriaSeleccionada,
+      subBehavior,
+      subSize,
+    );
+
     if (page === 1) {
       setItems(newItems);
     } else {
@@ -43,17 +71,25 @@ const Home = () => {
 
   return (
     <div className="bg-gradient-to-r from-[#064E3B] via-[#0F766E] to-[#083344] min-h-screen w-full">
-      <Hero
+      <Hero />
+
+      <Searcher
         alBuscar={(texto) => {
           setSearchTerm(texto);
           setPage(1);
         }}
         categoriaSeleccionada={categoriaSeleccionada}
         setCategoriaSeleccionada={(categoria) => {
-          setCategoriaSeleccionada(categoria);
+          if (categoria === "ITEM") {
+            navigate("/?filter=items");
+          } else if (categoria === "MOB") {
+            navigate("/?filter=mobs");
+          } else {
+            navigate("/"); 
+          }
+
           setSubBehavior("");
           setSubSize("");
-          setPage(1);
         }}
         alFiltrarSecundario={(propiedad, valor) => {
           if (propiedad === "behavior") {
@@ -65,6 +101,7 @@ const Home = () => {
           setPage(1);
         }}
       />
+
       <div className="px-1 pt-2 p-8 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {items.map((elemento) => (
@@ -81,4 +118,5 @@ const Home = () => {
     </div>
   );
 };
+
 export default Home;
