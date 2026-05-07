@@ -4,6 +4,7 @@ import SkinCustomizer from "../../components/SkinCustomizer/SkinCustomizer";
 import SkinPreview from "../../components/SkinPreview/SkinPreview";
 import ARBanner from "../../components/ARBanner/ARBanner";
 import Alex from "../../assets/icons/alex_head.png";
+import Construction from "../../components/Construction/Construction";
 
 const CreateSkin = () => {
   const { t } = useTranslation();
@@ -15,7 +16,8 @@ const CreateSkin = () => {
   });
   return (
     <div className="bg-gradient-to-r from-[#064E3B] via-[#0F766E] to-[#083344] min-h-screen w-full">
-      <div className="max-w-7xl mx-auto p-4 md:p-8 ">
+      <Construction />
+      {/* <div className="max-w-7xl mx-auto p-4 md:p-8 ">
         <h1
           className=" text-4xl md:text-5xl font-black mb-8 text-[#000000] uppercase flex items-center gap-4"
           style={{ textShadow: "none" }}
@@ -43,7 +45,7 @@ const CreateSkin = () => {
         <div className="mt-12">
           <ARBanner currentSkin={currentSkin} />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
