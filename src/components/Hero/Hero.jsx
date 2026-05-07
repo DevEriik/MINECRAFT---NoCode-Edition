@@ -5,8 +5,8 @@ import { useTranslation } from "react-i18next";
 import heroVideo from "../../assets/hero/hero-video.mp4";
 import iconEarth from "../../assets/icons/earth.png";
 import iconFavs from "../../assets/corazonRojo/corazon.png";
-import iconItems from "../../assets/icons/diamond_chestplate.png";
-import iconMobs from "../../assets/icons/creeper_head.png";
+import iconItems from "../../assets/icons/Diamond_Chestplate.png";
+import iconMobs from "../../assets/icons/Creeper_Head.png";
 import iconSkins from "../../assets/icons/herobrine.png";
 
 const Hero = () => {
