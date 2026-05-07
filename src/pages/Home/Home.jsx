@@ -42,20 +42,19 @@ const Home = () => {
   }, [loading]);
 
   return (
-    <div className="bg-[#1E1E1E] min-h-screen w-full">
-      <Hero 
+    <div className="bg-gradient-to-r from-[#064E3B] via-[#0F766E] to-[#083344] min-h-screen w-full">
+      <Hero
         alBuscar={(texto) => {
           setSearchTerm(texto);
-          setPage(1); 
+          setPage(1);
         }}
         categoriaSeleccionada={categoriaSeleccionada}
         setCategoriaSeleccionada={(categoria) => {
           setCategoriaSeleccionada(categoria);
           setSubBehavior("");
           setSubSize("");
-          setPage(1); 
+          setPage(1);
         }}
-        
         alFiltrarSecundario={(propiedad, valor) => {
           if (propiedad === "behavior") {
             setSubBehavior(valor);
@@ -66,8 +65,7 @@ const Home = () => {
           setPage(1);
         }}
       />
-      <div className="p-8 max-w-7xl mx-auto">
-    
+      <div className="px-1 pt-2 p-8 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {items.map((elemento) => (
             <Card key={elemento.id} item={elemento} />
