@@ -19,7 +19,7 @@
 
 ## 📜 Descripción del Proyecto
 
-Esta es una **Single Page Application (SPA)** diseñada como una enciclopedia interactiva del universo de Minecraft. El objetivo es permitir a los usuarios explorar criaturas (mobs) e ítems, visualizar sus detalles técnicos y gestionar su propio inventario de favoritos.
+Esta es una **Multi Pages** diseñada como una enciclopedia interactiva del universo de Minecraft. El objetivo es permitir a los usuarios explorar criaturas (mobs) e ítems, visualizar sus detalles técnicos y gestionar su propio inventario de favoritos.
 
 ### ✨ Características Principales
 

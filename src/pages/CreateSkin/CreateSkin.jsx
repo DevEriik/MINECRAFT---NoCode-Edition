@@ -1,41 +1,38 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import SkinCustomizer from "../../components/SkinCustomizer/SkinCustomizer";
+import SkinPreview from "../../components/SkinPreview/SkinPreview";
 import ARBanner from "../../components/ARBanner/ARBanner";
 import Alex from "../../assets/icons/alex_head.png";
+import Construction from "../../components/Construction/Construction";
 
 const CreateSkin = () => {
+  const { t } = useTranslation();
   const [currentSkin, setCurrentSkin] = useState({
+    playerName: "",
     skinColor: "#FFD6A5",
     hairColor: "#5E3A1B",
     height: 50,
   });
   return (
     <div className="bg-gradient-to-r from-[#064E3B] via-[#0F766E] to-[#083344] min-h-screen w-full">
-      <div className="max-w-7xl mx-auto p-4 md:p-8 ">
+      <Construction />
+      {/* <div className="max-w-7xl mx-auto p-4 md:p-8 ">
         <h1
           className=" text-4xl md:text-5xl font-black mb-8 text-[#000000] uppercase flex items-center gap-4"
           style={{ textShadow: "none" }}
         >
           <img src={Alex} alt="Alex" className="w-10 h-10 pixelated" />
-          Crea tu skin
+          {t("skin_creator")}
         </h1>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
-          <div className="md:col-span-1 bg-gradient-to-b from-[#e5f0f9] to-[#d4e5d3] border-4 border-[#000000] p-6 flex flex-col items-center justify-center min-h-[500px] shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] top-4 rounded-lg">
-            <div className="w-full text-left mb-auto">
-              <h2
-                className="text-xl font-bold text-black"
-                style={{ textShadow: "none" }}
-              >
-                Vista previa
-              </h2>
-            </div>
 
-            <p className="text-gray-600 font-bold text-center mt-10 mb-auto">
-              [ Espacio para el Ticket de Dani ]<br />
-              <br />
-              Acá se hace el personaje en 3D/2D
-            </p>
+          <div className="md:col-span-1">
+            <SkinPreview
+              currentSkin={currentSkin}
+              onUpdateSkin={setCurrentSkin}
+            />
           </div>
 
           <div className="md:col-span-2">
@@ -48,7 +45,7 @@ const CreateSkin = () => {
         <div className="mt-12">
           <ARBanner currentSkin={currentSkin} />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
