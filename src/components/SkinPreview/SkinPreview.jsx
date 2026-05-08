@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { toPng } from "html-to-image";
 import { useTranslation } from "react-i18next";
+import { TOPS, BOTTOMS, SHOES } from "../SkinCustomizer/SkinCustomizer";
 
 import cabezaImg from "../../assets/skin/cabeza.png";
 import peloImg from "../../assets/skin/pelo.png";
@@ -35,6 +36,13 @@ const SkinPreview = ({ currentSkin, onUpdateSkin }) => {
       console.error("Error al descargar la skin:", error);
     }
   };
+
+
+  const selectedTop = TOPS.find((item) => item.id === currentSkin?.topId);
+  const selectedBottom = BOTTOMS.find(
+    (item) => item.id === currentSkin?.bottomId,
+  );
+  const selectedShoes = SHOES.find((item) => item.id === currentSkin?.shoesId);
 
   return (
     <div className="bg-[#ffffff] border-4 border-[#000000] p-6 flex flex-col min-h-[500px] shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] rounded-lg">
@@ -90,6 +98,7 @@ const SkinPreview = ({ currentSkin, onUpdateSkin }) => {
               }}
             ></div>
           </div>
+
           <div className="flex flex-row w-32 h-24 z-20 relative">
             <div
               className="w-8 h-24"
@@ -102,8 +111,10 @@ const SkinPreview = ({ currentSkin, onUpdateSkin }) => {
                 imageRendering: "pixelated",
               }}
             ></div>
+
             <div
-              className="w-16 h-24"
+              className="relative w-16 h-24"
+
               style={{
                 backgroundColor: currentSkin.skinColor,
                 WebkitMaskImage: `url(${torsoImg})`,
@@ -124,18 +135,47 @@ const SkinPreview = ({ currentSkin, onUpdateSkin }) => {
                 imageRendering: "pixelated",
               }}
             ></div>
+
+            {selectedTop && (
+              <img
+                src={selectedTop.image}
+                alt="top"
+                className="absolute inset-0 w-full h-full object-contain [image-rendering:pixelated] z-10 origin-top scale-[2.9] -translate-y-[88px] pointer-events-none"
+              />
+            )}
           </div>
+
           <div
-            className="w-16 h-24 z-10 bg-gray-800"
+            className="relative w-16 h-24 z-10"
             style={{
-              backgroundColor: currentSkin.skinColor,
               WebkitMaskImage: `url(${piernasImg})`,
               maskImage: `url(${piernasImg})`,
               WebkitMaskSize: "100% 100%",
               maskSize: "100% 100%",
               imageRendering: "pixelated",
             }}
-          ></div>
+          >
+            <div
+              className="absolute inset-0 w-full h-full"
+              style={{ backgroundColor: currentSkin.skinColor }}
+            />
+
+            {selectedBottom && (
+              <img
+                src={selectedBottom.image}
+                alt="bottom"
+                className="absolute inset-0 w-full h-full object-contain [image-rendering:pixelated] z-10 origin-top scale-x-[3.4] scale-y-[3.0] -translate-y-[112px] -translate-x-[4px] pointer-events-none"
+              />
+            )}
+
+            {selectedShoes && (
+              <img
+                src={selectedShoes.image}
+                alt="shoes"
+                className="absolute inset-0 w-full h-full object-contain [image-rendering:pixelated] z-20 origin-bottom scale-x-[3.2] scale-y-[3.4] -translate-x-[8px] translate-y-24 pointer-events-none"
+              />
+            )}
+          </div>
         </div>
       </div>
 
