@@ -37,6 +37,7 @@ const SkinPreview = ({ currentSkin, onUpdateSkin }) => {
     }
   };
 
+
   const selectedTop = TOPS.find((item) => item.id === currentSkin?.topId);
   const selectedBottom = BOTTOMS.find(
     (item) => item.id === currentSkin?.bottomId,
@@ -113,6 +114,7 @@ const SkinPreview = ({ currentSkin, onUpdateSkin }) => {
 
             <div
               className="relative w-16 h-24"
+
               style={{
                 backgroundColor: currentSkin.skinColor,
                 WebkitMaskImage: `url(${torsoImg})`,
@@ -122,7 +124,6 @@ const SkinPreview = ({ currentSkin, onUpdateSkin }) => {
                 imageRendering: "pixelated",
               }}
             ></div>
-
             <div
               className="w-8 h-24"
               style={{
