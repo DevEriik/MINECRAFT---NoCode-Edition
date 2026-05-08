@@ -14,12 +14,9 @@ const ColorPalette = ({
         style={{ textShadow: "none" }}
       >
         <span>{title}</span>
-        <span className="text-sm font-normal text-[#9ca3af] border-2 border-[#9ca3af] px-2 py-1">
-          #HEX
-        </span>
       </h3>
 
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
         {colors.map((color) => (
           <button
             key={color}

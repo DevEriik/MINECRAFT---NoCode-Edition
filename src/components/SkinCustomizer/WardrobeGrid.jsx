@@ -25,12 +25,12 @@ const WardrobeGrid = ({ title, items, selectedId, onSelect }) => {
                   : "border-[#e5e7eb] hover:border-[#9ca3af] shadow-[4px_4px_0px_0px_rgba(0,0,0,0.1)]"
               }`}
             >
-              <div className="w-full h-12 md:h-16 flex items-center justify-center overflow-hidden">
+              <div className="w-full h-16 md:h-20 flex items-center justify-center overflow-hidden">
                 {item.image && (
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="w-full h-full object-contain [image-rendering:pixelated]"
+                    className="w-full h-full object-contain [image-rendering:pixelated] scale-[1.7] hover:scale-[2] transition-transform"
                   />
                 )}
               </div>

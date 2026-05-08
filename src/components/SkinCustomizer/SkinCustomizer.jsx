@@ -7,7 +7,7 @@ import top_naranja from "../../assets/Ropa/PartesArriba/parteArribaNaranja.png";
 import top_rojo from "../../assets/Ropa/PartesArriba/ArribarojaConNegro.png";
 import top_azul from "../../assets/Ropa/PartesArriba/ArribaSheanAzul.png";
 import top_negro from "../../assets/Ropa/PartesArriba/ArribaCalabera.png";
-import mid_naranja from "../../assets/Ropa/Pantalones/PantalonNaranja.png";
+import mid_naranja from "../../assets/Ropa/Pantalones/pantalonNaranja.png";
 import mid_rojo from "../../assets/Ropa/Pantalones/pantalonShean.png";
 import mid_azul from "../../assets/Ropa/Pantalones/pantalonMoztasa.png";
 import mid_negro from "../../assets/Ropa/Pantalones/pantalonesCalabera.png";
@@ -49,53 +49,58 @@ const SkinCustomizer = ({ currentSkin, onUpdateSkin }) => {
     }));
   };
   return (
-    <div className="flex flex-col gap-8 bg-[#ffffff] p-6 border-4 border-[#000000] shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div className="flex flex-col bg-[#ffffff] border border-gray-200 shadow-sm w-full rounded-md">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-6 border-b border-gray-200">
         <ColorPalette
           title={t("skin_color")}
           colors={SKIN_COLORS}
-          selectorColor={currentSkin?.skinColor}
+          selectedColor={currentSkin?.skinColor}
           onColorSelect={(color) => handleChange("skinColor", color)}
         />
-
         <ColorPalette
           title={t("hair_color")}
           colors={HAIR_COLORS}
-          selectorColor={currentSkin?.hairColor}
+          selectedColor={currentSkin?.hairColor}
           onColorSelect={(color) => handleChange("hairColor", color)}
         />
       </div>
 
-      <hr className="border-2 border-dashed border-[#9ca3af]" />
+      <div className="flex flex-col lg:flex-row">
+        <div className="w-full lg:w-1/3 p-6 border-b md:border-b-0 lg:border-r border-gray-200">
+          <HeightSlider
+            value={currentSkin?.height}
+            onChange={(val) => handleChange("height", val)}
+          />
+        </div>
 
-      <HeightSlider
-        value={currentSkin?.height}
-        onChange={(val) => handleChange("height", val)}
-      />
+        <div className="w-full lg:w-2/3 flex flex-col">
+          <div className="p-6 border-b border-gray-200">
+            <WardrobeGrid
+              title={t("top_part")}
+              items={TOPS}
+              selectedId={currentSkin?.topId}
+              onSelect={(id) => handleChange("topId", id)}
+            />
+          </div>
 
-      <hr className="border-2 border-dashed border-[#9ca3af]" />
+          <div className="p-6 border-b border-gray-200">
+            <WardrobeGrid
+              title={t("bottom_part")}
+              items={BOTTOMS}
+              selectedId={currentSkin?.bottomId}
+              onSelect={(id) => handleChange("bottomId", id)}
+            />
+          </div>
 
-      <div className="flex flex-col gap-6">
-        <WardrobeGrid
-          title={t("top_part")}
-          items={TOPS}
-          selectedId={currentSkin?.topId}
-          onSelect={(id) => handleChange("topId", id)}
-        />
-
-        <WardrobeGrid
-          title={t("bottom_part")}
-          items={BOTTOMS}
-          selectedId={currentSkin?.bottomId}
-          onSelect={(id) => handleChange("bottomId", id)}
-        />
-
-        <WardrobeGrid
-          title={t("footwear")}
-          items={SHOES}
-          selectedId={currentSkin?.shoesId}
-          onSelect={(id) => handleChange("shoesId", id)}
-        />
+          <div className="p-6">
+            <WardrobeGrid
+              title={t("footwear")}
+              items={SHOES}
+              selectedId={currentSkin?.shoesId}
+              onSelect={(id) => handleChange("shoesId", id)}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
