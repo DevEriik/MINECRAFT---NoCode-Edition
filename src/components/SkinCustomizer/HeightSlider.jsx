@@ -29,7 +29,10 @@ const HeightSlider = ({ value, onChange }) => {
         <span className={value >= 40 && value <= 70 ? "text-[#4d924c]" : ""}>
           {t("medium", "Medio")}
         </span>
-        <span className={value > 70 ? "text-black" : ""}> {t("tall", "Alto")} </span>
+        <span className={value > 70 ? "text-black" : ""}>
+          {" "}
+          {t("high", "Alto")}{" "}
+        </span>
       </div>
     </div>
   );

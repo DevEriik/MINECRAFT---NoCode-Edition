@@ -75,4 +75,6 @@ export const es = {
   player_name: "Nombre del jugador",
   download_skin: "DESCARGAR SKIN",
   download_png_text: "Tu skin se descargará en formato PNG",
+  short: "Bajo",
+  high: "Alto",
 };
