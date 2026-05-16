@@ -10,4 +10,9 @@ export default defineConfig({
     babel({ presets: [reactCompilerPreset()] }),
     tailwindcss(),
   ],
+  test: {
+    environment: "jsdom", // <-- Esta es la línea que falta para que reconozca "window" y "document"
+    globals: true,
+    setupFiles: ["./src/setupTests.js"],
+  },
 });
