@@ -11,8 +11,8 @@ export default defineConfig({
     tailwindcss(),
   ],
   test: {
-    environment: "jsdom", // <-- Esta es la línea que falta para que reconozca "window" y "document"
+    environment: "jsdom",
     globals: true,
-    setupFiles: ["./src/setupTests.js"],
+    setupFiles: "./src/setupTests.js",
   },
 });
