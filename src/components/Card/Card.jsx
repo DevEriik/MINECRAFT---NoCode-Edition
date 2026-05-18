@@ -29,7 +29,7 @@ export const Card = ({ item, onEliminar }) => {
     let favGuardados = JSON.parse(localStorage.getItem("favoritos")) || [];
     if (esFavorito) {
       favGuardados = favGuardados.filter((fav) => fav.id !== item.id);
-      mostrarNotificacion(`Se eliminó ${item.name} de favoritos`, `eliminar`);
+      mostrarNotificacion(`${item.name} se eliminó de favoritos`, `eliminar`);
       localStorage.setItem("favoritos", JSON.stringify(favGuardados));
       setEsFavorito(false);
       if (onEliminar) {
