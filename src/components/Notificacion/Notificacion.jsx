@@ -1,5 +1,6 @@
 import React from "react";
 import corazon from "../../assets/corazonRojo/corazon.png";
+
 export const Notificacion = ({ mensaje, tipo }) => {
     if (!mensaje) return null;
 
