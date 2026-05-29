@@ -4,11 +4,15 @@ import grassBlock from "../../assets/icons/grass_block.png";
 import { useTranslation } from "react-i18next";
 
 const ARBanner = ({ currentSkin }) => {
-  const baseUrl = "https://nocodecraft.com/";
+  const baseUrl = `${window.location.origin}/ar-view`;
+
   const queryParams = new URLSearchParams({
-    skinColor: currentSkin.skinColor,
-    hairColor: currentSkin.hairColor,
-    height: currentSkin.height,
+    skinColor: currentSkin.skinColor || "#FFD6A5",
+    hairColor: currentSkin.hairColor || "#5E3A1B",
+    height: currentSkin.height || 50,
+    topId: currentSkin.topId || "",
+    bottomId: currentSkin.bottomId || "",
+    shoesId: currentSkin.shoesId || "",
   }).toString();
 
   const qrUrl = `${baseUrl}?${queryParams}`;
@@ -19,9 +23,9 @@ const ARBanner = ({ currentSkin }) => {
   const creeperSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8 8"><rect width="8" height="8" fill="#D0E7E8"/><rect x="1" y="1" width="2" height="2" fill="#5A9144"/><rect x="5" y="1" width="2" height="2" fill="#5A9144"/><rect x="3" y="3" width="2" height="2" fill="#5A9144"/><rect x="2" y="4" width="1" height="2" fill="#5A9144"/><rect x="5" y="4" width="1" height="2" fill="#5A9144"/></svg>`;
   const creeperIcon = `data:image/svg+xml;utf8,${encodeURIComponent(creeperSvg)}`;
   const { t } = useTranslation();
+
   return (
     <div className="w-full bg-[#ffffff] p-6 lg:p-8 border-4 border-[#000000] shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] flex flex-col lg:flex-row items-center gap-8 justify-between">
-      {/* SECCIÓN IZQUIERDA: Título y texto */}
       <div className="flex-1 flex items-start gap-4">
         <img
           src={grassBlock}
@@ -43,7 +47,6 @@ const ARBanner = ({ currentSkin }) => {
         </div>
       </div>
 
-      {/* SECCIÓN CENTRAL: QR y Pasos */}
       <div className="flex-[1.5] flex flex-col sm:flex-row items-center justify-center gap-6 bg-[#f8f9fa] p-4 border-4 border-dashed border-[#9ca3af]">
         <div className="p-3 bg-[#D0E7E8] border-4 border-[#000000] shrink-0 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all cursor-pointer">
           <QRCodeSVG
@@ -91,7 +94,6 @@ const ARBanner = ({ currentSkin }) => {
         </div>
       </div>
 
-      {/* SECCIÓN DERECHA: Imagen representativa */}
       <div className="flex-1 hidden xl:flex justify-end">
         <div className="w-[280px] h-[140px] bg-gray-800 rounded-[2rem] border-[6px] border-black relative overflow-hidden flex items-center justify-center shadow-inner">
           <div className="absolute left-3 w-4 h-16 bg-black rounded-r-xl"></div>
