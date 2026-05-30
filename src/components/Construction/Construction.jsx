@@ -1,7 +1,8 @@
 import React from "react";
 import GiftPico from "../../assets/ContructionPico/picoPicando.gif";
-
+import { useTranslation } from "react-i18next";
 const Construction = () => {
+  const { t } = useTranslation();
   return (
     <div className="flex flex-col items-center justify-center p-4 text-center">
       <img
@@ -14,17 +15,17 @@ const Construction = () => {
         className="text-4xl font-black uppercase text-[#000000] tracking-tight"
         style={{ textShadow: "none" }}
       >
-        Esta página está
+        {t("thisPage")}
         <br />
         <span className="text-5xl text-[#4d924c] tracking-tighter">
-          En Construcción
+          {t("underCons")}
         </span>
       </h2>
 
       <p className="text-sm text-[#1f2937] mt-6 font-bold">
-        Disculpá las molestias, estamos picando código.
+        {t("disculpOne")}
         <br />
-        ¡Volvé en la próxima versión de la snapshot!
+        {t("disculpTwo")}
       </p>
     </div>
   );
