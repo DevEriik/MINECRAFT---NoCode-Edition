@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Hero from "../../components/Hero/Hero";
 import Searcher from "../../components/Searcher/Searcher";
 import { Card } from "../../components/Card/Card";
-import { getAllItems } from "../../services/getAllItems";
+import { getAll } from "../../services/api";
 
 const Home = () => {
   const [items, setItems] = useState([]);
@@ -34,21 +34,14 @@ const Home = () => {
 
   const loadItems = async () => {
     setLoading(true);
-    const newItems = await getAllItems(
-      page,
-      10,
-      searchTerm,
-      categoriaSeleccionada,
-      subBehavior,
-      subSize,
-    );
-
-    if (page === 1) {
+    try {
+      const newItems = await getAll("items");
       setItems(newItems);
-    } else {
-      setItems((prevItems) => [...prevItems, ...newItems]);
+    } catch (error) {
+      console.error("Error al cargar los ítems:", error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   useEffect(() => {

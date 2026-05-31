@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { getItemById } from "../../services/getItemById";
+import { getAll } from "../../services/api";
 import styles from "./Details.module.css";
 import ExportPdfButton from "../../components/ExportPdfButton/ExportPdfButton";
 import corazon from "../../assets/corazonRojo/corazon.png";
@@ -23,7 +23,7 @@ const Details = () => {
       try {
         setLoading(true);
         await new Promise((resolve) => setTimeout(resolve, 800));
-        const data = await getItemById(id);
+        const data = await getById("items", id);
         setItem(data);
       } catch (err) {
         setError(true);
