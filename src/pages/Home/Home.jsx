@@ -3,7 +3,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Hero from "../../components/Hero/Hero";
 import Searcher from "../../components/Searcher/Searcher";
 import { Card } from "../../components/Card/Card";
-import { getAllItems } from "../../services/getAllItems";
+import { getAll } from "../../services/api";
+import AddCardForm from "../../components/AddCardForm/AddCardForm";
 
 const Home = () => {
   const [items, setItems] = useState([]);
@@ -34,21 +35,14 @@ const Home = () => {
 
   const loadItems = async () => {
     setLoading(true);
-    const newItems = await getAllItems(
-      page,
-      10,
-      searchTerm,
-      categoriaSeleccionada,
-      subBehavior,
-      subSize,
-    );
-
-    if (page === 1) {
+    try {
+      const newItems = await getAll("items");
       setItems(newItems);
-    } else {
-      setItems((prevItems) => [...prevItems, ...newItems]);
+    } catch (error) {
+      console.error("Error al cargar los ítems:", error);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -72,7 +66,7 @@ const Home = () => {
   return (
     <div className="bg-gradient-to-r from-[#064E3B] via-[#0F766E] to-[#083344] min-h-screen w-full">
       <Hero />
-
+      <AddCardForm />
       <Searcher
         alBuscar={(texto) => {
           setSearchTerm(texto);
@@ -85,7 +79,7 @@ const Home = () => {
           } else if (categoria === "MOB") {
             navigate("/?filter=mobs");
           } else {
-            navigate("/"); 
+            navigate("/");
           }
 
           setSubBehavior("");
