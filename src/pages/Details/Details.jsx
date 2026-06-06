@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { getItemById } from "../../services/getItemById";
+import { getById } from "../../services/api";
 import styles from "./Details.module.css";
 import ExportPdfButton from "../../components/ExportPdfButton/ExportPdfButton";
 import corazon from "../../assets/corazonRojo/corazon.png";
@@ -10,7 +10,6 @@ const Details = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { t } = useTranslation();
-
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -23,8 +22,23 @@ const Details = () => {
       try {
         setLoading(true);
         await new Promise((resolve) => setTimeout(resolve, 800));
-        const data = await getItemById(id);
-        setItem(data);
+
+        const isMobId = id.startsWith("mob-");
+        const realId = id.split("-")[1];
+        const entidad = isMobId ? "mobs" : "items";
+
+        const data = await getById(entidad, realId);
+
+        const dataFormateada = {
+          ...data,
+          id: id,
+          type: isMobId ? "MOB" : "ITEM",
+          image: data.imageUrl,
+          behavior: isMobId ? data.type : data.rarity,
+          size: isMobId ? "Mediano" : "Herramienta",
+        };
+
+        setItem(dataFormateada);
       } catch (err) {
         setError(true);
       } finally {
