@@ -10,7 +10,6 @@ const Details = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { t } = useTranslation();
-
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
