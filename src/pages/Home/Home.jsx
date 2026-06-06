@@ -4,6 +4,7 @@ import Hero from "../../components/Hero/Hero";
 import Searcher from "../../components/Searcher/Searcher";
 import { Card } from "../../components/Card/Card";
 import { getAll } from "../../services/api";
+import AddCardForm from "../../components/AddCardForm/AddCardForm";
 
 const Home = () => {
   const [items, setItems] = useState([]);
@@ -65,7 +66,7 @@ const Home = () => {
   return (
     <div className="bg-gradient-to-r from-[#064E3B] via-[#0F766E] to-[#083344] min-h-screen w-full">
       <Hero />
-
+      <AddCardForm />
       <Searcher
         alBuscar={(texto) => {
           setSearchTerm(texto);
@@ -78,7 +79,7 @@ const Home = () => {
           } else if (categoria === "MOB") {
             navigate("/?filter=mobs");
           } else {
-            navigate("/"); 
+            navigate("/");
           }
 
           setSubBehavior("");
