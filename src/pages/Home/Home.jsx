@@ -35,14 +35,46 @@ const Home = () => {
   }, [location.search]);
 
   const loadItems = async () => {
-    setLoading(true);
+    setIsLoading(true);
+    setError(null);
     try {
-      const newItems = await getAll("items");
-      setItems(newItems);
+      let data = [];
+      if (categoriaSeleccionada === "ITEM") {
+        data = await getAll("items");
+      } else if (categoriaSeleccionada === "MOB") {
+        data = await getAll("mobs");
+      } else {
+        const [itemsList, mobsList] = await Promise.all([
+          getAll("items"),
+          getAll("mobs"),
+        ]);
+        data = [...itemsList, ...mobsList];
+      }
+
+      let filtered = data;
+      if (searchTerm.trim() !== "") {
+        const term = searchTerm.toLowerCase();
+        filtered = filtered.filter(
+          (x) =>
+            x.name?.toLowerCase().includes(term) ||
+            x.description?.toLowerCase().includes(term),
+        );
+      }
+
+      if (subSize !== "") {
+        filtered = filtered.filter((x) => x.size === subSize);
+      }
+
+      filtered.sort((a, b) => b.id - a.id);
+
+      const itemsPerPage = 8;
+      const paginatedItems = filtered.slice(0, page * itemsPerPage);
+      setItems(paginatedItems);
     } catch (error) {
       console.error("Error al cargar los ítems:", error);
+      setError("Error al conectar con la base de datos");
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -67,7 +99,7 @@ const Home = () => {
   return (
     <div className="bg-gradient-to-r from-[#064E3B] via-[#0F766E] to-[#083344] min-h-screen w-full">
       <Hero />
-      <AddCardForm />
+      <AddCardForm onEntityCreated={loadItems} />
       <Searcher
         alBuscar={(texto) => {
           setSearchTerm(texto);
@@ -80,7 +112,6 @@ const Home = () => {
           } else if (categoria === "MOB") {
             navigate("/?filter=mobs");
           } else {
-            navigate("/");
             navigate("/");
           }
 
@@ -105,7 +136,7 @@ const Home = () => {
           </div>
         )}
 
-        {isLoading && (
+        {isLoading && items.length === 0 && (
           <div className="text-center mt-8 font-bold text-xl animate-pulse text-white font-mono">
             Generando terreno... (Cargando base de datos 📦)
           </div>
