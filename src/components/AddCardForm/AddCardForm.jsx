@@ -101,6 +101,7 @@ const AddCardForm = () => {
 
       <div className="bg-[#1f2937] border-4 border-black p-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
         <div className="flex justify-center items-center gap-10 mb-10 h-16">
+          
           <button
             type="button"
             onClick={() => {
@@ -111,6 +112,7 @@ const AddCardForm = () => {
           >
             ⛏️ Crear Ítem
           </button>
+
           <button
             type="button"
             onClick={() => {
