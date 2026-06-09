@@ -9,7 +9,8 @@ import AddCardForm from "../../components/AddCardForm/AddCardForm";
 const Home = () => {
   const [items, setItems] = useState([]);
   const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [categoriaSeleccionada, setCategoriaSeleccionada] = useState("Todos");
   const [subBehavior, setSubBehavior] = useState("");
@@ -53,7 +54,7 @@ const Home = () => {
     const isBottom =
       window.innerHeight + document.documentElement.scrollTop + 1 >=
       document.documentElement.scrollHeight;
-    if (isBottom && !loading) {
+    if (isBottom && !isLoading) {
       setPage((prevPage) => prevPage + 1);
     }
   };
@@ -61,7 +62,7 @@ const Home = () => {
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [loading]);
+  }, [isLoading]);
 
   return (
     <div className="bg-gradient-to-r from-[#064E3B] via-[#0F766E] to-[#083344] min-h-screen w-full">
@@ -80,6 +81,7 @@ const Home = () => {
             navigate("/?filter=mobs");
           } else {
             navigate("/");
+            navigate("/");
           }
 
           setSubBehavior("");
@@ -97,15 +99,28 @@ const Home = () => {
       />
 
       <div className="px-1 pt-2 p-8 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {items.map((elemento) => (
-            <Card key={elemento.id} item={elemento} />
-          ))}
-        </div>
+        {error && (
+          <div className="text-center mt-8 font-black text-xl text-red-500 font-mono uppercase bg-black border-4 border-red-500 p-6 shadow-[8px_8px_0px_0px_rgba(255,0,0,1)]">
+            ⚠️ {error}
+          </div>
+        )}
 
-        {loading && (
-          <div className="text-center mt-8 font-bold text-xl animate-pulse text-white">
-            Cargando base de datos...
+        {isLoading && (
+          <div className="text-center mt-8 font-bold text-xl animate-pulse text-white font-mono">
+            Generando terreno... (Cargando base de datos 📦)
+          </div>
+        )}
+        {!isLoading && !error && items.length === 0 && (
+          <div className="text-center mt-8 font-black text-xl text-[#000000] font-mono uppercase bg-[#ffffff] border-4 border-[#000000] p-6 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+            [ No hay items registrados en la base de datos ]
+          </div>
+        )}
+
+        {!error && items.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {items.map((elemento) => (
+              <Card key={elemento.id} item={elemento} />
+            ))}
           </div>
         )}
       </div>
