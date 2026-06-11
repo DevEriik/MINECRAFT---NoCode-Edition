@@ -6,8 +6,9 @@ import Header from "./components/Header/Header.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 import Details from "./pages/Details/Details.jsx";
 import CreateSkin from "./pages/CreateSkin/CreateSkin.jsx";
+import ARView from "./pages/ARView/ARView.jsx";
 import NotFound from "./pages/NotFound/NotFound.jsx";
-import "./locals/i18n"; 
+import "./locals/i18n";
 
 function App() {
   return (
@@ -21,6 +22,8 @@ function App() {
             <Route path="/item/:id" element={<Details />} />
             <Route path="/favoritos" element={<Favorites />} />
             <Route path="/crear-skin" element={<CreateSkin />} />
+            <Route path="/ar-view" element={<ARView />} />
+
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
