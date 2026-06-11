@@ -48,6 +48,8 @@ export const Card = ({ item, onEliminar }) => {
     window.dispatchEvent(new Event("favoritesUpdated"));
   };
 
+  const esMob = item.health !== undefined;
+
   return (
     <Link
       to={`/item/${item.id}`}
@@ -55,13 +57,13 @@ export const Card = ({ item, onEliminar }) => {
     >
       <div className="relative h-52 flex-shrink-0 bg-gray-500 flex items-center justify-center mb-4 border-4 border-black">
         <span
-          className={`absolute top-1 left-1 px-3 py-1.5 text-[15px] font-black border-2 border-black ${item.type === "ITEM" ? "bg-cyan-600 text-white" : "bg-green-600 text-white"}`}
+          className={`absolute top-1 left-1 px-3 py-1.5 text-[15px] font-black border-2 border-black ${!esMob ? "bg-cyan-600 text-white" : "bg-green-600 text-white"}`}
         >
-          {item.type}
+          {esMob ? "MOB" : "ITEM"}
         </span>
-        {item.image ? (
+        {item.imageUrl ? (
           <img
-            src={item.image}
+            src={item.imageUrl}
             alt={item.name}
             className="object-contain w-full h-full p-2"
             style={{ imageRendering: "pixelated" }}
@@ -81,17 +83,19 @@ export const Card = ({ item, onEliminar }) => {
         <div className="flex flex-col gap-1 flex-grow overflow-hidden mt-1">
           <p className="text-[13px] font-bold text-gray-800 uppercase">
             <span className="text-black">
-              {item.type === "MOB" ? "COMPORTAMIENTO: " : "UTILIDAD: "}
+              {esMob ? "TIPO: " : "UTILIDAD: "}
             </span>
-            {item.behavior}
+            {esMob ? item.type : item.rarity}
           </p>
 
-          <p className="text-[13px] font-bold text-gray-800 uppercase">
-            <span className="text-black">
-              {item.type === "MOB" ? "TAMAÑO: " : "TIPO: "}
-            </span>
-            {item.size}
-          </p>
+          {esMob && (
+            <p className="text-[13px] font-bold text-gray-800 uppercase">
+              <span className="text-black">
+                VIDA:
+              </span>
+              {item.health}
+            </p>
+          )}
 
           <p className="text-[14px] text-gray-700 leading-tight border-t-2 border-dashed border-gray-400 pt-2 mt-1 overflow-y-auto pr-1 custom-scrollbar">
             {item.description}

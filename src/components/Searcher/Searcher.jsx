@@ -1,5 +1,5 @@
 import React from "react";
-import { useTranslation } from "react-i18next"; // <-- Sumamos el hook de traducciones
+import { useTranslation } from "react-i18next";
 import iconoLupa from "../../assets/icons/lupa.png";
 import iconoPico from "../../assets/icons/diamond_pickaxe.webp";
 import iconoZombie from "../../assets/icons/zombie_head.png";
@@ -10,24 +10,26 @@ const Searcher = ({
   setCategoriaSeleccionada,
   alFiltrarSecundario,
 }) => {
-  const { t } = useTranslation(); // <-- Inicializamos la función t()
+  const { t } = useTranslation();
 
   return (
     <div className="w-full bg-transparent border-b-8 border-black py-8 mb-12 px-4 shadow-[inset_0px_8px_15px_rgba(0,0,0,0.5)]">
       <div className="max-w-6xl mx-auto flex flex-col gap-4 font-mono">
         <div className="flex flex-col lg:flex-row gap-4 items-stretch">
-          {/* buscador */}
           <div className="flex-grow flex border-4 border-black bg-white shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]">
             <img src={iconoLupa} alt="Buscar" className="w-6 h-6 m-4" />
             <input
               type="text"
-              placeholder={t("search_placeholder")} // Traducido
-              onChange={(evento) => alBuscar && alBuscar(evento.target.value)}
+              placeholder={t("search_placeholder")}
+              onChange={(evento) => {
+                if (alBuscar) {
+                  alBuscar(evento.target.value);
+                }
+              }}
               className="flex-grow p-3 font-mono text-lg outline-none w-full text-black placeholder-gray-400 font-bold uppercase"
             />
           </div>
 
-          {/* botones */}
           <div className="flex gap-4 h-full">
             <button
               onClick={() =>
@@ -39,7 +41,7 @@ const Searcher = ({
                   : "bg-[#333333] text-white border-black hover:bg-[#444444] shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:translate-x-1"
               }`}
             >
-              ☰ {t("all")} {/* Traducido */}
+              ☰ {t("all")}
             </button>
 
             <button
@@ -72,7 +74,6 @@ const Searcher = ({
           </div>
         </div>
 
-        {/* filtros secundarios */}
         {categoriaSeleccionada !== "Todos" && (
           <div className="flex gap-6 flex-wrap">
             {categoriaSeleccionada === "ITEM" && (
@@ -84,7 +85,6 @@ const Searcher = ({
                   className="border-4 border-black p-2 bg-[#333333] text-white font-bold text-sm uppercase shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
                 >
                   <option value="">{t("utility_all")}</option>
-                  {/* Los values quedan en español para no romper el filtro, el texto se traduce */}
                   <option value="Ataque">{t("attack")}</option>
                   <option value="Alquimia">{t("alchemy")}</option>
                   <option value="Construcción">{t("construction")}</option>
