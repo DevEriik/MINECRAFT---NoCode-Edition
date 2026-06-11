@@ -36,43 +36,31 @@ const Home = () => {
 
   const loadItems = async () => {
     setIsLoading(true);
-    setError(null);
     try {
-      let data = [];
+      let datosCrudos = [];
+
       if (categoriaSeleccionada === "ITEM") {
-        data = await getAll("items");
+        datosCrudos = await getAll("items");
       } else if (categoriaSeleccionada === "MOB") {
-        data = await getAll("mobs");
+        datosCrudos = await getAll("mobs");
       } else {
-        const [itemsList, mobsList] = await Promise.all([
-          getAll("items"),
-          getAll("mobs"),
-        ]);
-        data = [...itemsList, ...mobsList];
+        const itemsRes = await getAll("items");
+        const mobsRes = await getAll("mobs");
+        datosCrudos = [...itemsRes, ...mobsRes];
       }
 
-      let filtered = data;
       if (searchTerm.trim() !== "") {
-        const term = searchTerm.toLowerCase();
-        filtered = filtered.filter(
-          (x) =>
-            x.name?.toLowerCase().includes(term) ||
-            x.description?.toLowerCase().includes(term),
+        datosCrudos = datosCrudos.filter((elemento) =>
+          elemento.name.toLowerCase().includes(searchTerm.toLowerCase()),
         );
       }
 
-      if (subSize !== "") {
-        filtered = filtered.filter((x) => x.size === subSize);
-      }
+      datosCrudos.sort((a, b) => b.id - a.id);
 
-      filtered.sort((a, b) => b.id - a.id);
-
-      const itemsPerPage = 8;
-      const paginatedItems = filtered.slice(0, page * itemsPerPage);
-      setItems(paginatedItems);
+      setItems(datosCrudos);
     } catch (error) {
-      console.error("Error al cargar los ítems:", error);
-      setError("Error al conectar con la base de datos");
+      console.error("Error al cargar los elementos:", error);
+      setError("Hubo un problema al cargar los datos");
     } finally {
       setIsLoading(false);
     }
