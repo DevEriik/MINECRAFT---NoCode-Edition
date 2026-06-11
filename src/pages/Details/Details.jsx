@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { getById } from "../../services/api"; 
+import { getById, getAll } from "../../services/api";
 import styles from "./Details.module.css";
 import ExportPdfButton from "../../components/ExportPdfButton/ExportPdfButton";
 import corazon from "../../assets/corazonRojo/corazon.png";
@@ -20,7 +20,15 @@ const Details = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const data = await getById("items", id); 
+        await new Promise((resolve) => setTimeout(resolve, 800));
+
+        let data;
+        try {
+          data = await getById("items", id);
+        } catch (itemErr) {
+          data = await getById("mobs", id);
+        }
+
         setItem(data);
       } catch (err) {
         setError(true);
@@ -80,7 +88,7 @@ const Details = () => {
     );
   }
 
-  const isMob = item.type !== undefined && item.health !== undefined; 
+  const isMob = item.type !== undefined && item.health !== undefined;
   const themeColor = isMob ? "#4d924c" : "#4AEEE2";
 
   return (
