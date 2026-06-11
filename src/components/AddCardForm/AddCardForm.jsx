@@ -1,8 +1,11 @@
 import { useState } from "react";
 import FormInput from "../FormInput/FormInput";
 import FormSelect from "../FormSelect/FormSelect";
+import { create } from "../../services/api";
+import { Translation } from "react-i18next";
+import { describe } from "vitest";
 
-const AddCardForm = () => {
+const AddCardForm = ({ onEntityCreated }) => {
   const [entityType, setEntityType] = useState("item");
   const [formData, setFormData] = useState({
     name: "",
@@ -14,6 +17,8 @@ const AddCardForm = () => {
     behavior: "",
   });
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,7 +26,24 @@ const AddCardForm = () => {
     if (errors[name]) setErrors({ ...errors, [name]: "" });
   };
 
-  const handleSubmit = (e) => {
+  const mapBackendErrors = (details) => {
+    const newErrors = {};
+    if (Array.isArray(details)) {
+      details.forEach((err) => {
+        const { field, message } = err;
+        if (field.includes("name")) newErrors.name = message;
+        else if (field.includes("imageUrl")) newErrors.imageUrl = message;
+        else if (field.includes("description")) newErrors.description = message;
+        else if (field.includes("rarity")) newErrors.rarity = message;
+        else if (field.includes("type")) newErrors.type = message;
+        else if (field.includes("health")) newErrors.size = message;
+        else newErrors.general = message;
+      });
+    }
+    return newErrors;
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     let newErrors = {};
     let isValid = true;
@@ -78,7 +100,86 @@ const AddCardForm = () => {
 
     if (isValid) {
       console.log("Datos validados y listos para enviar:", formData);
+      setIsSubmitting(true);
+      setSubmitError("");
 
+      let payload = {};
+      if (entityType === "item") {
+        payload = {
+          imageUrl: formData.imageUrl,
+          translations: [
+            {
+              lang: "es",
+              name: formData.name,
+              description: formData.description,
+              rarity: formData.rarity,
+            },
+            {
+              lang: "en",
+              name: formData.name,
+              description: formData.description,
+              rarity: formData.rarity,
+            },
+          ],
+        };
+      } else {
+        let health = 20;
+        if (formData.size === "Pequeño") health = 10;
+        else if (formData.size === "Mediano") health = 20;
+        else if (formData.size === "Grande") health = 40;
+        else if (formData.size === "Jefe") health = 100;
+
+        payload = {
+          imageUrl: formData.imageUrl,
+          health,
+          translations: [
+            {
+              lang: "es",
+              name: formData.name,
+              description: formData.description,
+              type: formData.behavior,
+            },
+            {
+              lang: "en",
+              name: formData.name,
+              description: formData.description,
+              type: formData.behavior,
+            },
+          ],
+        };
+      }
+
+      try {
+        const entidad = entityType === "item" ? "items" : "mobs";
+        await create(entidad, payload);
+
+        setFormData({
+          name: "",
+          imageUrl: "",
+          description: "",
+          rarity: "",
+          type: "",
+          size: "",
+          behavior: "",
+        });
+        setErrors({});
+
+        if (onEntityCreated) {
+          onEntityCreated();
+        }
+      } catch (error) {
+        console.error("Error al crear la entidad", error);
+        if (error.status === 400 && error.details) {
+          setErrors(mapBackendErrors(error.details));
+        } else {
+          setSubmitError(
+            error.message ||
+              "Ocurrio un error inesperado al conectar con el servidor",
+          );
+        }
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -106,6 +207,7 @@ const AddCardForm = () => {
             onClick={() => {
               setEntityType("item");
               setErrors({});
+              setSubmitError("");
             }}
             className={`font-bold uppercase transition-all duration-200 ${entityType === "item" ? "px-8 py-3 text-lg bg-sky-900 border-4 border-cyan-950 text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]" : "px-5 py-2 text-sm bg-gray-600 text-white border-0 hover:bg-gray-500 hover:scale-105"}`}
           >
@@ -116,12 +218,19 @@ const AddCardForm = () => {
             onClick={() => {
               setEntityType("mob");
               setErrors({});
+              setSubmitError("");
             }}
             className={`font-bold uppercase transition-all duration-200 ${entityType === "mob" ? "px-8 py-3 text-lg bg-green-900 border-4 border-green-950 text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]" : "px-5 py-2 text-sm bg-gray-600 text-white border-0 hover:bg-gray-500 hover:scale-105"}`}
           >
             🧟 Crear Mob
           </button>
         </div>
+
+        {submitError && (
+          <div className="text-center mb-6 font-bold text-red-500 bg-red-950 border-4 border-red-500 p-4">
+            ⚠️ {submitError}
+          </div>
+        )}
 
         <form
           onSubmit={handleSubmit}
@@ -214,7 +323,9 @@ const AddCardForm = () => {
             type="submit"
             className={`mt-6 border-4 border-black text-white font-extrabold text-xl uppercase py-4 transition-colors shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[6px] hover:translate-y-[6px] ${entityType === "item" ? "bg-sky-900 hover:bg-sky-800" : "bg-green-900 hover:bg-green-800"}`}
           >
-            Guardar {entityType === "item" ? "Ítem" : "Mob"}
+            {isSubmitting
+              ? "Guardando..."
+              : `Guardar ${entityType === "item" ? "Ítem" : "Mob"}`}
           </button>
         </form>
       </div>
