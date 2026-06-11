@@ -97,7 +97,7 @@ const Home = () => {
   return (
     <div className="bg-gradient-to-r from-[#064E3B] via-[#0F766E] to-[#083344] min-h-screen w-full">
       <Hero />
-      <AddCardForm />
+      <AddCardForm onEntityCreated={loadItems} />
       <Searcher
         alBuscar={(texto) => {
           setSearchTerm(texto);
@@ -110,7 +110,6 @@ const Home = () => {
           } else if (categoria === "MOB") {
             navigate("/?filter=mobs");
           } else {
-            navigate("/");
             navigate("/");
           }
 
@@ -135,7 +134,7 @@ const Home = () => {
           </div>
         )}
 
-        {isLoading && (
+        {isLoading && items.length === 0 && (
           <div className="text-center mt-8 font-bold text-xl animate-pulse text-white font-mono">
             Generando terreno... (Cargando base de datos 📦)
           </div>
