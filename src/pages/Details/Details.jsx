@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { getById } from "../../services/api";
+import { getAll } from "../../services/api";
 import styles from "./Details.module.css";
 import ExportPdfButton from "../../components/ExportPdfButton/ExportPdfButton";
 import corazon from "../../assets/corazonRojo/corazon.png";
@@ -22,23 +22,8 @@ const Details = () => {
       try {
         setLoading(true);
         await new Promise((resolve) => setTimeout(resolve, 800));
-
-        const isMobId = id.startsWith("mob-");
-        const realId = id.split("-")[1];
-        const entidad = isMobId ? "mobs" : "items";
-
-        const data = await getById(entidad, realId);
-
-        const dataFormateada = {
-          ...data,
-          id: id,
-          type: isMobId ? "MOB" : "ITEM",
-          image: data.imageUrl,
-          behavior: isMobId ? data.type : data.rarity,
-          size: isMobId ? "Mediano" : "Herramienta",
-        };
-
-        setItem(dataFormateada);
+        const data = await getById("items", id);
+        setItem(data);
       } catch (err) {
         setError(true);
       } finally {

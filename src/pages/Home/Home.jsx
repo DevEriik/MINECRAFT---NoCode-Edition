@@ -4,6 +4,7 @@ import Hero from "../../components/Hero/Hero";
 import Searcher from "../../components/Searcher/Searcher";
 import { Card } from "../../components/Card/Card";
 import { getAll } from "../../services/api";
+import AddCardForm from "../../components/AddCardForm/AddCardForm";
 
 const Home = () => {
   const [items, setItems] = useState([]);
@@ -34,71 +35,14 @@ const Home = () => {
   }, [location.search]);
 
   const loadItems = async () => {
-    setIsLoading(true);
-    setError(null);
-
+    setLoading(true);
     try {
-      let data = [];
-
-      if (categoriaSeleccionada === "Todos") {
-        const [itemsData, mobsData] = await Promise.all([
-          getAll("items"),
-          getAll("mobs"),
-        ]);
-
-        const itemsFormateados = itemsData.map((item) => ({
-          ...item,
-          id: `item-${item.id}`,
-          type: "ITEM",
-          image: item.imageUrl,
-          behavior: item.rarity,
-          size: "Herramienta",
-        }));
-
-        const mobsFormateados = mobsData.map((mob) => ({
-          ...mob,
-          id: `mob-${mob.id}`,
-          type: "MOB",
-          image: mob.imageUrl,
-          behavior: mob.type,
-          size: "Mediano",
-        }));
-
-        data = [...mobsFormateados, ...itemsFormateados];
-      } else if (categoriaSeleccionada === "ITEM") {
-        const itemsData = await getAll("items");
-        data = itemsData.map((item) => ({
-          ...item,
-          type: "ITEM",
-          image: item.imageUrl,
-          behavior: item.rarity,
-          size: "Herramienta",
-        }));
-      } else if (categoriaSeleccionada === "MOB") {
-        const mobsData = await getAll("mobs");
-        data = mobsData.map((mob) => ({
-          ...mob,
-          type: "MOB",
-          image: mob.imageUrl,
-          behavior: mob.type,
-          size: "Mediano",
-        }));
-      }
-
-      if (searchTerm) {
-        data = data.filter((item) =>
-          item.name.toLowerCase().includes(searchTerm.toLowerCase()),
-        );
-      }
-
-      setItems(data);
+      const newItems = await getAll("items");
+      setItems(newItems);
     } catch (error) {
-      console.error("Error cargando los datos del backend:", error);
-      setError(
-        "No pudimos conectar con el servidor de Minecraft. Intenta de nuevo mas tarde.",
-      );
+      console.error("Error al cargar los ítems:", error);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
@@ -123,7 +67,7 @@ const Home = () => {
   return (
     <div className="bg-gradient-to-r from-[#064E3B] via-[#0F766E] to-[#083344] min-h-screen w-full">
       <Hero />
-
+      <AddCardForm />
       <Searcher
         alBuscar={(texto) => {
           setSearchTerm(texto);
@@ -136,6 +80,7 @@ const Home = () => {
           } else if (categoria === "MOB") {
             navigate("/?filter=mobs");
           } else {
+            navigate("/");
             navigate("/");
           }
 
