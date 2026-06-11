@@ -34,52 +34,50 @@ const Home = () => {
     setPage(1);
   }, [location.search]);
 
-  const loadItems = async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      let data = [];
-      if (categoriaSeleccionada === "ITEM") {
-        data = await getAll("items");
-      } else if (categoriaSeleccionada === "MOB") {
-        data = await getAll("mobs");
-      } else {
-        const [itemsList, mobsList] = await Promise.all([
-          getAll("items"),
-          getAll("mobs"),
-        ]);
-        data = [...itemsList, ...mobsList];
-      }
-
-      let filtered = data;
-      if (searchTerm.trim() !== "") {
-        const term = searchTerm.toLowerCase();
-        filtered = filtered.filter(
-          (x) =>
-            x.name?.toLowerCase().includes(term) ||
-            x.description?.toLowerCase().includes(term),
-        );
-      }
-
-      if (subSize !== "") {
-        filtered = filtered.filter((x) => x.size === subSize);
-      }
-
-      filtered.sort((a, b) => b.id - a.id);
-
-      const itemsPerPage = 8;
-      const paginatedItems = filtered.slice(0, page * itemsPerPage);
-      setItems(paginatedItems);
-    } catch (error) {
-      console.error("Error al cargar los ítems:", error);
-      setError("Error al conectar con la base de datos");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
+    let ignore = false; 
+
+    const loadItems = async () => {
+      setIsLoading(true);
+      try {
+        let datosCrudos = [];
+
+        if (categoriaSeleccionada === "ITEM") {
+          datosCrudos = await getAll("items");
+        } else if (categoriaSeleccionada === "MOB") {
+          datosCrudos = await getAll("mobs");
+        } else {
+          const itemsRes = await getAll("items");
+          const mobsRes = await getAll("mobs");
+          datosCrudos = [...itemsRes, ...mobsRes];
+        }
+
+        if (searchTerm.trim() !== "") {
+          datosCrudos = datosCrudos.filter((elemento) =>
+            elemento.name.toLowerCase().includes(searchTerm.toLowerCase())
+          );
+        }
+
+        if (!ignore) {
+          setItems(datosCrudos);
+        }
+      } catch (error) {
+        if (!ignore) {
+          console.error("Error al cargar los elementos:", error);
+          setError("Hubo un problema al cargar los datos");
+        }
+      } finally {
+        if (!ignore) {
+          setIsLoading(false);
+        }
+      }
+    };
+
     loadItems();
+
+    return () => {
+      ignore = true;
+    };
   }, [page, searchTerm, categoriaSeleccionada, subBehavior, subSize]);
 
   const handleScroll = () => {
