@@ -106,6 +106,7 @@ const AddCardForm = ({ onEntityCreated }) => {
       let payload = {};
       if (entityType === "item") {
         payload = {
+          name: formData.name,
           imageUrl: formData.imageUrl,
           translations: [
             {
@@ -130,6 +131,7 @@ const AddCardForm = ({ onEntityCreated }) => {
         else if (formData.size === "Jefe") health = 100;
 
         payload = {
+          name: formData.name,
           imageUrl: formData.imageUrl,
           health,
           translations: [
