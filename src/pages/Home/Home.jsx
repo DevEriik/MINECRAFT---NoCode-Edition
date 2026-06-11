@@ -34,20 +34,50 @@ const Home = () => {
     setPage(1);
   }, [location.search]);
 
-  const loadItems = async () => {
-    setLoading(true);
-    try {
-      const newItems = await getAll("items");
-      setItems(newItems);
-    } catch (error) {
-      console.error("Error al cargar los ítems:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    let ignore = false; 
+
+    const loadItems = async () => {
+      setIsLoading(true);
+      try {
+        let datosCrudos = [];
+
+        if (categoriaSeleccionada === "ITEM") {
+          datosCrudos = await getAll("items");
+        } else if (categoriaSeleccionada === "MOB") {
+          datosCrudos = await getAll("mobs");
+        } else {
+          const itemsRes = await getAll("items");
+          const mobsRes = await getAll("mobs");
+          datosCrudos = [...itemsRes, ...mobsRes];
+        }
+
+        if (searchTerm.trim() !== "") {
+          datosCrudos = datosCrudos.filter((elemento) =>
+            elemento.name.toLowerCase().includes(searchTerm.toLowerCase())
+          );
+        }
+
+        if (!ignore) {
+          setItems(datosCrudos);
+        }
+      } catch (error) {
+        if (!ignore) {
+          console.error("Error al cargar los elementos:", error);
+          setError("Hubo un problema al cargar los datos");
+        }
+      } finally {
+        if (!ignore) {
+          setIsLoading(false);
+        }
+      }
+    };
+
     loadItems();
+
+    return () => {
+      ignore = true;
+    };
   }, [page, searchTerm, categoriaSeleccionada, subBehavior, subSize]);
 
   const handleScroll = () => {
