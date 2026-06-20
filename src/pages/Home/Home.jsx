@@ -34,50 +34,40 @@ const Home = () => {
     setPage(1);
   }, [location.search]);
 
-  useEffect(() => {
-    let ignore = false; 
+  const loadItems = async () => {
+    setIsLoading(true);
+    try {
+      let datosCrudos = [];
 
-    const loadItems = async () => {
-      setIsLoading(true);
-      try {
-        let datosCrudos = [];
-
-        if (categoriaSeleccionada === "ITEM") {
-          datosCrudos = await getAll("items");
-        } else if (categoriaSeleccionada === "MOB") {
-          datosCrudos = await getAll("mobs");
-        } else {
-          const itemsRes = await getAll("items");
-          const mobsRes = await getAll("mobs");
-          datosCrudos = [...itemsRes, ...mobsRes];
-        }
-
-        if (searchTerm.trim() !== "") {
-          datosCrudos = datosCrudos.filter((elemento) =>
-            elemento.name.toLowerCase().includes(searchTerm.toLowerCase())
-          );
-        }
-
-        if (!ignore) {
-          setItems(datosCrudos);
-        }
-      } catch (error) {
-        if (!ignore) {
-          console.error("Error al cargar los elementos:", error);
-          setError("Hubo un problema al cargar los datos");
-        }
-      } finally {
-        if (!ignore) {
-          setIsLoading(false);
-        }
+      if (categoriaSeleccionada === "ITEM") {
+        datosCrudos = await getAll("items");
+      } else if (categoriaSeleccionada === "MOB") {
+        datosCrudos = await getAll("mobs");
+      } else {
+        const itemsRes = await getAll("items");
+        const mobsRes = await getAll("mobs");
+        datosCrudos = [...itemsRes, ...mobsRes];
       }
-    };
 
+      if (searchTerm.trim() !== "") {
+        datosCrudos = datosCrudos.filter((elemento) =>
+          elemento.name.toLowerCase().includes(searchTerm.toLowerCase()),
+        );
+      }
+
+      datosCrudos.sort((a, b) => b.id - a.id);
+
+      setItems(datosCrudos);
+    } catch (error) {
+      console.error("Error al cargar los elementos:", error);
+      setError("Hubo un problema al cargar los datos");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
     loadItems();
-
-    return () => {
-      ignore = true;
-    };
   }, [page, searchTerm, categoriaSeleccionada, subBehavior, subSize]);
 
   const handleScroll = () => {
