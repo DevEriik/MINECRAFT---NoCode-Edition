@@ -3,7 +3,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 const fetchWithAuth = async (urlSuffix, options = {}) => {
   const token = localStorage.getItem("token");
 
-  const header = {
+  const headers = {
     ...options.headers,
   };
 
@@ -55,7 +55,7 @@ export const getAll = async (entidad) => {
 };
 
 export const getById = async (entidad, id) => {
-  const response = fetchWithAuth(entidad / { id });
+  const response = await fetchWithAuth(`${entidad}/${id}`);
   if (!response.ok)
     throw new Error(`Error al obtener el registro de ${entidad}`);
   const data = await response.json();
