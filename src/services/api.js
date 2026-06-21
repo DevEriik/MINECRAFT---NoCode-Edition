@@ -1,5 +1,22 @@
 const API_URL = import.meta.env.VITE_API_URL;
 
+const fetchWithAuth = async (urlSuffix, options = {}) => {
+  const token = localStorage.getItem("token");
+
+  const header = {
+    ...options.headers,
+  };
+
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
+  return fetch(`${API_URL}/${urlSuffix}`, {
+    ...options,
+    headers,
+  });
+};
+
 const mapEntity = (entidad, data) => {
   if (!data) return null;
 
@@ -31,14 +48,14 @@ const mapEntity = (entidad, data) => {
 };
 
 export const getAll = async (entidad) => {
-  const response = await fetch(`${API_URL}/${entidad}`);
+  const response = await fetchWithAuth(entidad);
   if (!response.ok) throw new Error(`Error al obtener los datos de ${entidad}`);
   const list = await response.json();
   return list.map((item) => mapEntity(entidad, item));
 };
 
 export const getById = async (entidad, id) => {
-  const response = await fetch(`${API_URL}/${entidad}/${id}`);
+  const response = fetchWithAuth(entidad / { id });
   if (!response.ok)
     throw new Error(`Error al obtener el registro de ${entidad}`);
   const data = await response.json();
@@ -46,7 +63,7 @@ export const getById = async (entidad, id) => {
 };
 
 export const create = async (entidad, data) => {
-  const response = await fetch(`${API_URL}/${entidad}`, {
+  const response = await fetchWithAuth(entidad, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -67,7 +84,7 @@ export const create = async (entidad, data) => {
 };
 
 export const update = async (entidad, id, data) => {
-  const response = await fetch(`${API_URL}/${entidad}/${id}`, {
+  const response = await fetchWithAuth(`${entidad}/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -80,7 +97,7 @@ export const update = async (entidad, id, data) => {
 };
 
 export const remove = async (entidad, id) => {
-  const response = await fetch(`${API_URL}/${entidad}/${id}`, {
+  const response = await fetchWithAuth(`${entidad}/${id}`, {
     method: "DELETE",
   });
 
