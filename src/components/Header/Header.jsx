@@ -129,7 +129,22 @@ const Header = () => {
 
       {/* MULTI-IDIOMA Y BOTON HAMBURGUESA */}
       <div className="flex-1 flex justify-end items-center">
-        <div className="hidden lg:block">
+        <div className="hidden lg:flex items-center gap-8 ">
+          <Link
+            to="/login"
+            className="bg-green-800 hover:bg-green-700 text-white font-extrabold text-lg uppercase px-4 py-1.5 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] transition-all"
+          >
+            Login
+          </Link>
+          <Link
+            to="/register"
+            className="bg-sky-900 hover:bg-sky-800 text-white font-extrabold text-lg uppercase px-4 py-1.5 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] transition-all"
+          >
+            Registrarse
+          </Link>
+        </div>
+
+        <div className="hidden lg:block ml-10">
           <button
             onClick={toggleLanguage}
             className="border-4 border-black bg-white text-black px-3 py-1 font-bold text-lg hover:bg-[var(--color-minecraft-grass)] hover:text-white transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1"
@@ -233,10 +248,25 @@ const Header = () => {
             </Link>
           </div>
 
-          <div className="border-t-4 border-black mt-4 pt-4">
+          <div className="border-t-4 border-black mt-4 pt-4 flex flex-col gap-3">
+            <Link
+              to="/login"
+              className="text-center bg-green-800 hover:bg-green-700 text-white font-extrabold text-lg uppercase px-4 py-3 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-1 active:translate-y-1 transition-all"
+            >
+              Login
+            </Link>
+
+            <Link
+              to="/register"
+              onClick={toggleMenu}
+              className="text-center bg-sky-900 hover:bg-sky-800 text-white font-extrabold text-lg uppercase px-4 py-3 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-1 active:translate-y-1 transition-all"
+            >
+              Registrarse
+            </Link>
+
             <button
               onClick={toggleLanguage}
-              className="border-4 border-black bg-white text-black px-4 py-2 font-bold w-full hover:bg-[var(--color-minecraft-grass)] hover:text-white transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"
+              className="mt-2 border-4 border-black bg-white text-black px-4 py-2 font-bold w-full hover:bg-[var(--color-minecraft-grass)] hover:text-white transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-1 active:translate-y-1"
             >
               LANGUAGE: {i18n.language === "es" ? "ES / EN" : "EN / ES"}
             </button>
