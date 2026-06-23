@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import styles from "./Header.module.css";
+import { useAuth } from "../../context/AuthContext";
 
 import logoImage from "../../assets/logo/logo.svg";
 import corazon from "../../assets/corazonRojo/corazon.png";
@@ -14,11 +15,11 @@ const Header = () => {
   const [favCount, setFavCount] = useState(0);
   const location = useLocation();
   const navigate = useNavigate(); 
+  
+  const { user, logout } = useAuth();
 
-  const mockUser = { name: "Abril", role: "ADMIN" };
-
-  const mockLogout = () => {
-    console.log("Mock Logout: Borrando sesión...");
+  const handleLogout = async () => {
+    await logout();
     navigate('/login');
   };
 
@@ -48,7 +49,6 @@ const Header = () => {
 
   return (
     <header className={styles.headerContainer}>
-      {/* 1. CONTENEDOR IZQUIERDO (LOGO) */}
       <div className="flex-1 flex justify-start">
         <Link
           to="/"
@@ -141,13 +141,13 @@ const Header = () => {
             {i18n.language === "es" ? "ES / EN" : "EN / ES"}
           </button>
 
-          {mockUser ? (
+          {user ? (
             <div className="flex items-center gap-3">
               <span className="font-bold text-gray-800 uppercase tracking-wider">
-                ¡Hola, {mockUser.name}!
+                ¡Hola, {user.name}!
               </span>
               <button
-                onClick={mockLogout}
+                onClick={handleLogout}
                 className="border-4 border-black bg-[#ff3333] text-white px-3 py-1 font-bold text-lg hover:bg-red-700 transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1"
               >
                 Cerrar Sesión
@@ -207,14 +207,14 @@ const Header = () => {
           </div>
 
           <div className="border-t-4 border-black mt-4 pt-4 flex flex-col gap-4">
-            {mockUser ? (
+            {user ? (
               <>
                 <span className="font-bold text-gray-800 uppercase text-center block w-full text-lg">
-                  ¡Hola, {mockUser.name}!
+                  ¡Hola, {user.name}!
                 </span>
                 <button
                   onClick={() => {
-                    mockLogout();
+                    handleLogout();
                     toggleMenu();
                   }}
                   className="border-4 border-black bg-[#ff3333] text-white px-4 py-2 font-bold w-full hover:bg-red-700 transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-lg"

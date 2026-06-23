@@ -3,22 +3,34 @@ import { Link, useNavigate } from "react-router-dom";
 import { Notificacion } from "../Notificacion/Notificacion";
 import corazon from "../../assets/corazonRojo/corazon.png";
 import { useTranslation } from "react-i18next";
+import { getFavorites, addFavorite, removeFavorite } from "../../services/api";
+import { useAuth } from "../../context/AuthContext";
 
 export const Card = ({ item, onEliminar }) => {
   const [aviso, setAviso] = useState({ mensaje: "", tipo: "" });
   const [esFavorito, setEsFavorito] = useState(false);
+  const [cargandoFav, setCargandoFav] = useState(false);
   const { t } = useTranslation();
   const navigate = useNavigate();
 
-  // MOCK STATE (Cambialo a mano para probar las distintas vistas)
-  // Opciones: null, { name: "Dani", role: "CLIENT" }, { name: "Abril", role: "ADMIN" }
-  const mockUser = { name: "Abril", role: "ADMIN" };
+  const { user } = useAuth();
+  
+  const esMob = item.health !== undefined;
+  const entityTypeStr = esMob ? "mob" : "item"; 
 
   useEffect(() => {
-    const favGuardados = JSON.parse(localStorage.getItem("favoritos")) || [];
-    const exist = favGuardados.some((fav) => fav.id === item.id);
-    setEsFavorito(exist);
-  }, [item.id]);
+    const verificarFavorito = async () => {
+      if (!user) return;
+      try {
+        const favoritos = await getFavorites();
+        const existe = favoritos.some((fav) => fav.details && fav.details.id === item.id);
+        setEsFavorito(existe);
+      } catch (error) {
+        console.error("Error al verificar favorito:", error);
+      }
+    };
+    verificarFavorito();
+  }, [item.id, user]); 
 
   const mostrarNotificacion = (texto, accion) => {
     setAviso({ mensaje: texto, tipo: accion });
@@ -27,11 +39,11 @@ export const Card = ({ item, onEliminar }) => {
     }, 5000);
   };
 
-  const manejarFavorito = (e) => {
+  const manejarFavorito = async (e) => {
     e.preventDefault();
     e.stopPropagation();
 
-    if (!mockUser) {
+    if (!user) {
       const goToLogin = window.confirm(
         "⚠️ Debes iniciar sesión para guardar favoritos. ¿Quieres ir al Login ahora?"
       );
@@ -41,25 +53,32 @@ export const Card = ({ item, onEliminar }) => {
       return; 
     }
 
-    let favGuardados = JSON.parse(localStorage.getItem("favoritos")) || [];
-    if (esFavorito) {
-      favGuardados = favGuardados.filter((fav) => fav.id !== item.id);
-      mostrarNotificacion(`${item.name} se eliminó de favoritos`, `eliminar`);
-      localStorage.setItem("favoritos", JSON.stringify(favGuardados));
-      setEsFavorito(false);
-      if (onEliminar) {
-        setTimeout(() => {
-          onEliminar(item.id);
-        }, 2000);
-      }
-    } else {
-      favGuardados.push(item);
-      mostrarNotificacion(`¡${item.name} se guardó en favoritos!`, `agregar`);
-      localStorage.setItem("favoritos", JSON.stringify(favGuardados));
-    }
+    if (cargandoFav) return; 
+    setCargandoFav(true);
 
-    setEsFavorito(!esFavorito);
-    window.dispatchEvent(new Event("favoritesUpdated"));
+    try {
+      if (esFavorito) {
+        await removeFavorite(item.id, entityTypeStr);
+        setEsFavorito(false);
+        mostrarNotificacion(`${item.name} se eliminó de favoritos`, `eliminar`);
+        
+        if (onEliminar) {
+          setTimeout(() => {
+            onEliminar(item.id);
+          }, 2000);
+        }
+      } else {
+        await addFavorite(item.id, entityTypeStr);
+        setEsFavorito(true);
+        mostrarNotificacion(`¡${item.name} se guardó en favoritos!`, `agregar`);
+      }
+      
+      window.dispatchEvent(new Event("favoritesUpdated"));
+    } catch (error) {
+      mostrarNotificacion("Error al procesar el favorito en el servidor", "error");
+    } finally {
+      setCargandoFav(false);
+    }
   };
 
   const manejarEditar = (e) => {
@@ -76,8 +95,6 @@ export const Card = ({ item, onEliminar }) => {
       onEliminar(item.id);
     }
   };
-
-  const esMob = item.health !== undefined;
 
   return (
     <Link
@@ -135,7 +152,7 @@ export const Card = ({ item, onEliminar }) => {
       {esFavorito ? (
         <div
           onClick={manejarFavorito}
-          className="w-full mt-auto py-2 px-4 bg-green-800 border-4 border-black flex items-center justify-center gap-2 cursor-pointer hover:bg-[#444444] transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
+          className={`w-full mt-auto py-2 px-4 bg-green-800 border-4 border-black flex items-center justify-center gap-2 cursor-pointer hover:bg-[#444444] transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none ${cargandoFav ? 'opacity-50 pointer-events-none' : ''}`}
         >
           <img
             src={corazon}
@@ -144,21 +161,21 @@ export const Card = ({ item, onEliminar }) => {
             style={{ imageRendering: "pixelated" }}
           />
           <span className="text-sm text-white font-black uppercase">
-            {t("inFavorite")}
+            {cargandoFav ? "Cargando..." : t("inFavorite")}
           </span>
         </div>
       ) : (
         <div
           onClick={manejarFavorito}
-          className="w-full mt-auto py-2 px-4 bg-[#3b3b3b] border-4 border-black flex items-center justify-center gap-2 cursor-pointer hover:bg-[#444444] transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none"
+          className={`w-full mt-auto py-2 px-4 bg-[#3b3b3b] border-4 border-black flex items-center justify-center gap-2 cursor-pointer hover:bg-[#444444] transition-all shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none ${cargandoFav ? 'opacity-50 pointer-events-none' : ''}`}
         >
           <span className="text-sm text-white font-black uppercase">
-            ♡ {t("textFavorite")}
+            ♡ {cargandoFav ? "Cargando..." : t("textFavorite")}
           </span>
         </div>
       )}
 
-      {mockUser && mockUser.role === "ADMIN" && (
+      {user && user.role === "ADMIN" && (
         <div className="flex gap-2 mt-3">
           <button 
             onClick={manejarEditar}

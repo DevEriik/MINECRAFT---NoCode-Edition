@@ -144,3 +144,29 @@ export const remove = async (entidad, id) => {
   if (!response.ok) throw new Error(`Error al eliminar en ${entidad}`);
   return response.json();
 };
+
+export const getFavorites = async () => {
+  const response = await fetchWithAuth('favorites');
+  if (!response.ok) throw new Error('Error al obtener la lista de favoritos');
+  return response.json();
+};
+
+export const addFavorite = async (id, entityType) => {
+  const response = await fetchWithAuth(`favorites/${id}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ entityType }),
+  });
+  if (!response.ok) throw new Error('Error al agregar el favorito');
+  return response.json();
+};
+
+export const removeFavorite = async (id, entityType) => {
+  const response = await fetchWithAuth(`favorites/${id}?entityType=${entityType}`, {
+    method: 'DELETE',
+  });
+  if (!response.ok) throw new Error('Error al eliminar el favorito');
+  return response.json();
+};
