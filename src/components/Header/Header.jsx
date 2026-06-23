@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import styles from "./Header.module.css";
 
@@ -13,6 +13,14 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [favCount, setFavCount] = useState(0);
   const location = useLocation();
+  const navigate = useNavigate(); 
+
+  const mockUser = { name: "Abril", role: "ADMIN" };
+
+  const mockLogout = () => {
+    console.log("Mock Logout: Borrando sesión...");
+    navigate('/login');
+  };
 
   const updateFavCount = () => {
     const favoritas = JSON.parse(localStorage.getItem("favoritos")) || [];
@@ -55,7 +63,6 @@ const Header = () => {
       </div>
 
       <nav className="hidden lg:flex items-center justify-center gap-8">
-        {/* LINK HOME */}
         <Link
           to="/"
           className={`group relative flex items-center gap-2 text-lg uppercase tracking-wide cursor-pointer transition-all duration-300 hover:-translate-y-1 pb-2 ${
@@ -75,7 +82,6 @@ const Header = () => {
           />
         </Link>
 
-        {/* LINK FAVORITOS */}
         <Link
           to="/favoritos"
           className={`group relative flex items-center gap-2 text-lg uppercase tracking-wide cursor-pointer transition-all duration-300 hover:-translate-y-1 pb-2 ${
@@ -106,7 +112,6 @@ const Header = () => {
           />
         </Link>
 
-        {/* LINK SKIN CREATOR (DESKTOP) */}
         <Link
           to="/crear-skin"
           className={`group relative flex items-center gap-2 text-lg uppercase tracking-wide cursor-pointer transition-all duration-300 hover:-translate-y-1 pb-2 ${
@@ -127,30 +132,43 @@ const Header = () => {
         </Link>
       </nav>
 
-      {/* MULTI-IDIOMA Y BOTON HAMBURGUESA */}
-      <div className="flex-1 flex justify-end items-center">
-        <div className="hidden lg:flex items-center gap-8 ">
-          <Link
-            to="/login"
-            className="bg-green-800 hover:bg-green-700 text-white font-extrabold text-lg uppercase px-4 py-1.5 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] transition-all"
-          >
-            Login
-          </Link>
-          <Link
-            to="/register"
-            className="bg-sky-900 hover:bg-sky-800 text-white font-extrabold text-lg uppercase px-4 py-1.5 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[4px] hover:translate-y-[4px] transition-all"
-          >
-            Registrarse
-          </Link>
-        </div>
-
-        <div className="hidden lg:block ml-10">
+      <div className="flex-1 flex justify-end items-center gap-4">
+        <div className="hidden lg:flex items-center gap-4">
           <button
             onClick={toggleLanguage}
             className="border-4 border-black bg-white text-black px-3 py-1 font-bold text-lg hover:bg-[var(--color-minecraft-grass)] hover:text-white transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1"
           >
             {i18n.language === "es" ? "ES / EN" : "EN / ES"}
           </button>
+
+          {mockUser ? (
+            <div className="flex items-center gap-3">
+              <span className="font-bold text-gray-800 uppercase tracking-wider">
+                ¡Hola, {mockUser.name}!
+              </span>
+              <button
+                onClick={mockLogout}
+                className="border-4 border-black bg-[#ff3333] text-white px-3 py-1 font-bold text-lg hover:bg-red-700 transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1"
+              >
+                Cerrar Sesión
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              <Link
+                to="/login"
+                className="border-4 border-black bg-gray-200 text-black px-3 py-1 font-bold text-lg hover:bg-gray-300 transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1"
+              >
+                Ingresar
+              </Link>
+              <Link
+                to="/register"
+                className="border-4 border-black bg-[var(--color-minecraft-grass)] text-white px-3 py-1 font-bold text-lg hover:bg-green-600 transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1"
+              >
+                Registro
+              </Link>
+            </div>
+          )}
         </div>
 
         <button
@@ -163,110 +181,69 @@ const Header = () => {
         </button>
       </div>
 
-      {/* MENÚ MOBILE */}
       {isMenuOpen && (
         <div className={styles.mobileMenu}>
           <div className="flex flex-col gap-4">
-            {/* MOBILE HOME */}
-            <Link
-              to="/"
-              onClick={toggleMenu}
-              className={`relative overflow-hidden ${styles.navItem} transition-all duration-300 py-1 ${
-                location.pathname === "/"
-                  ? "text-[var(--color-minecraft-grass)] font-black pl-3 bg-gray-100"
-                  : "text-gray-700 hover:pl-3"
-              }`}
-            >
-              <span
-                className={`absolute left-0 top-0 w-1 h-full bg-[var(--color-minecraft-grass)] transition-transform duration-300 origin-top ${
-                  location.pathname === "/" ? "scale-y-100" : "scale-y-0"
-                }`}
-              />
-              <img
-                src={iconoHome}
-                alt="Home"
-                className="w-7 h-7 inline-block mr-2"
-              />
+            <Link to="/" onClick={toggleMenu} className={`relative overflow-hidden ${styles.navItem} transition-all duration-300 py-1 ${location.pathname === "/" ? "text-[var(--color-minecraft-grass)] font-black pl-3 bg-gray-100" : "text-gray-700 hover:pl-3"}`}>
+              <span className={`absolute left-0 top-0 w-1 h-full bg-[var(--color-minecraft-grass)] transition-transform duration-300 origin-top ${location.pathname === "/" ? "scale-y-100" : "scale-y-0"}`} />
+              <img src={iconoHome} alt="Home" className="w-7 h-7 inline-block mr-2" />
               {t("home")}
             </Link>
 
-            {/* MOBILE FAVORITOS */}
-            <Link
-              to="/favoritos"
-              onClick={toggleMenu}
-              className={`relative overflow-hidden ${styles.navItem} transition-all duration-300 py-1 ${
-                location.pathname === "/favoritos"
-                  ? "text-[#ff3333] font-black pl-3 bg-gray-100"
-                  : "text-gray-700 hover:pl-3"
-              }`}
-            >
-              <span
-                className={`absolute left-0 top-0 w-1 h-full bg-[#ff3333] transition-transform duration-300 origin-top ${
-                  location.pathname === "/favoritos"
-                    ? "scale-y-100"
-                    : "scale-y-0"
-                }`}
-              />
+            <Link to="/favoritos" onClick={toggleMenu} className={`relative overflow-hidden ${styles.navItem} transition-all duration-300 py-1 ${location.pathname === "/favoritos" ? "text-[#ff3333] font-black pl-3 bg-gray-100" : "text-gray-700 hover:pl-3"}`}>
+              <span className={`absolute left-0 top-0 w-1 h-full bg-[#ff3333] transition-transform duration-300 origin-top ${location.pathname === "/favoritos" ? "scale-y-100" : "scale-y-0"}`} />
               <div className="relative inline-block mr-2">
-                <img
-                  src={corazon}
-                  alt="Favoritos"
-                  className="w-7 h-7 object-contain"
-                />
-                {favCount > 0 && (
-                  <span className="absolute -top-1 -right-2 bg-[#ff3333] text-white text-[9px] font-black border-2 border-black w-4 h-4 flex items-center justify-center">
-                    {favCount}
-                  </span>
-                )}
+                <img src={corazon} alt="Favoritos" className="w-7 h-7 object-contain" />
+                {favCount > 0 && <span className="absolute -top-1 -right-2 bg-[#ff3333] text-white text-[9px] font-black border-2 border-black w-4 h-4 flex items-center justify-center">{favCount}</span>}
               </div>
               {t("favorites")}
             </Link>
 
-            {/* MOBILE SKINS */}
-            <Link
-              to="/crear-skin"
-              onClick={toggleMenu}
-              className={`relative overflow-hidden ${styles.navItem} transition-all duration-300 py-1 ${
-                location.pathname === "/crear-skin"
-                  ? "text-[var(--color-minecraft-amethyst)] font-black pl-3 bg-gray-100"
-                  : "text-gray-700 hover:pl-3"
-              }`}
-            >
-              <span
-                className={`absolute left-0 top-0 w-1 h-full bg-[var(--color-minecraft-amethyst)] transition-transform duration-300 origin-top ${
-                  location.pathname === "/crear-skin"
-                    ? "scale-y-100"
-                    : "scale-y-0"
-                }`}
-              />
-              <img
-                src={iconoSkin}
-                alt="Skins"
-                className="w-7 h-7 inline-block mr-2"
-              />
+            <Link to="/crear-skin" onClick={toggleMenu} className={`relative overflow-hidden ${styles.navItem} transition-all duration-300 py-1 ${location.pathname === "/crear-skin" ? "text-[var(--color-minecraft-amethyst)] font-black pl-3 bg-gray-100" : "text-gray-700 hover:pl-3"}`}>
+              <span className={`absolute left-0 top-0 w-1 h-full bg-[var(--color-minecraft-amethyst)] transition-transform duration-300 origin-top ${location.pathname === "/crear-skin" ? "scale-y-100" : "scale-y-0"}`} />
+              <img src={iconoSkin} alt="Skins" className="w-7 h-7 inline-block mr-2" />
               {t("skin_creator")}
             </Link>
           </div>
 
-          <div className="border-t-4 border-black mt-4 pt-4 flex flex-col gap-3">
-            <Link
-              to="/login"
-              className="text-center bg-green-800 hover:bg-green-700 text-white font-extrabold text-lg uppercase px-4 py-3 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-1 active:translate-y-1 transition-all"
-            >
-              Login
-            </Link>
-
-            <Link
-              to="/register"
-              onClick={toggleMenu}
-              className="text-center bg-sky-900 hover:bg-sky-800 text-white font-extrabold text-lg uppercase px-4 py-3 border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-1 active:translate-y-1 transition-all"
-            >
-              Registrarse
-            </Link>
+          <div className="border-t-4 border-black mt-4 pt-4 flex flex-col gap-4">
+            {mockUser ? (
+              <>
+                <span className="font-bold text-gray-800 uppercase text-center block w-full text-lg">
+                  ¡Hola, {mockUser.name}!
+                </span>
+                <button
+                  onClick={() => {
+                    mockLogout();
+                    toggleMenu();
+                  }}
+                  className="border-4 border-black bg-[#ff3333] text-white px-4 py-2 font-bold w-full hover:bg-red-700 transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-lg"
+                >
+                  Cerrar Sesión
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  onClick={toggleMenu}
+                  className="border-4 border-black bg-gray-200 text-black px-4 py-2 font-bold w-full text-center hover:bg-gray-300 transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-lg block"
+                >
+                  Ingresar
+                </Link>
+                <Link
+                  to="/register"
+                  onClick={toggleMenu}
+                  className="border-4 border-black bg-[var(--color-minecraft-grass)] text-white px-4 py-2 font-bold w-full text-center hover:bg-green-600 transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-lg block"
+                >
+                  Registro
+                </Link>
+              </>
+            )}
 
             <button
               onClick={toggleLanguage}
-              className="mt-2 border-4 border-black bg-white text-black px-4 py-2 font-bold w-full hover:bg-[var(--color-minecraft-grass)] hover:text-white transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-1 active:translate-y-1"
+              className="border-4 border-black bg-white text-black px-4 py-2 font-bold w-full hover:bg-[var(--color-minecraft-grass)] hover:text-white transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-lg"
             >
               LANGUAGE: {i18n.language === "es" ? "ES / EN" : "EN / ES"}
             </button>
