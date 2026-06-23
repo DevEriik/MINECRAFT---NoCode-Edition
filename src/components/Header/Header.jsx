@@ -15,11 +15,6 @@ const Header = () => {
   const location = useLocation();
   const navigate = useNavigate(); 
 
-  // MOCK STATE (Cambialo a mano para probar las distintas vistas)
-  // Opciones: 
-  // null -> (Simula que no hay nadie logueado)
-  // { name: "Dani", role: "CLIENT" } -> (Simula un usuario normal)
-  // { name: "Abril", role: "ADMIN" } -> (Simula un administrador)
   const mockUser = { name: "Abril", role: "ADMIN" };
 
   const mockLogout = () => {
