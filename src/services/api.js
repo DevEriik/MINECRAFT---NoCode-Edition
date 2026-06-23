@@ -1,7 +1,7 @@
 const API_URL = import.meta.env.VITE_API_URL;
 
 const fetchWithAuth = async (urlSuffix, options = {}) => {
-  const token = localStorage.getItem("token");
+  let token = localStorage.getItem("token");
 
   const headers = {
     ...options.headers,
@@ -11,10 +11,50 @@ const fetchWithAuth = async (urlSuffix, options = {}) => {
     headers["Authorization"] = `Bearer ${token}`;
   }
 
-  return fetch(`${API_URL}/${urlSuffix}`, {
+  let response = await fetch(`${API_URL}/${urlSuffix}`, {
     ...options,
     headers,
   });
+
+  if (
+    response.status === 401 &&
+    !urlSuffix.includes("auth/refresh") &&
+    !urlSuffix.includes("auth/login")
+  ) {
+    const refreshToken = localStorage.getItem("refreshToken");
+
+    if (refreshToken) {
+      try {
+        const refreshResponse = await fetch(`${API_URL}/auth/refresh`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ refreshToken }),
+        });
+
+        if (refreshResponse.ok) {
+          const data = await refreshResponse.json();
+
+          localStorage.setItem("token", data.token);
+
+          headers["Authorization"] = `Bearer ${data.token}`;
+          response = await fetch(`${API_URL}/${urlSuffix}`, {
+            ...options,
+            headers,
+          });
+        } else {
+          localStorage.removeItem("token");
+          localStorage.removeItem("refreshToken");
+          window.location.href = "/login";
+        }
+      } catch (err) {
+        console.error("Error intentando refrescar token:", err);
+      }
+    }
+  }
+
+  return response;
 };
 
 const mapEntity = (entidad, data) => {
