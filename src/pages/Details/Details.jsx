@@ -5,6 +5,7 @@ import { getById, getAll } from "../../services/api";
 import styles from "./Details.module.css";
 import ExportPdfButton from "../../components/ExportPdfButton/ExportPdfButton";
 import corazon from "../../assets/corazonRojo/corazon.png";
+import { useAuth } from "../../context/AuthContext";
 
 const Details = () => {
   const { id } = useParams();
@@ -16,9 +17,7 @@ const Details = () => {
   const [isSaved, setIsSaved] = useState(false);
   const captureRef = useRef(null);
 
-  // MOCK STATE (Cambialo a mano para probar las distintas vistas)
-  // Opciones: null, { name: "Dani", role: "CLIENT" }, { name: "Abril", role: "ADMIN" }
-  const mockUser = { name: "Abril", role: "ADMIN" };
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,7 +51,7 @@ const Details = () => {
   }, [item]);
 
   const toggleFavorite = () => {
-    if (!mockUser) {
+    if (!user) {
       const goToLogin = window.confirm(
         "⚠️ Debes iniciar sesión para guardar favoritos. ¿Quieres ir al Login ahora?"
       );
@@ -222,7 +221,7 @@ const Details = () => {
             </div>
           </div>
 
-          {mockUser && mockUser.role === "ADMIN" && (
+          {user && user.role === "ADMIN" && (
             <div className="border-t-4 border-[#000000] pt-4 mt-2">
               <h3 className="text-lg font-black text-red-600 uppercase mb-3 flex items-center gap-2">
                 <span>👑</span> Controles de Administrador

@@ -1,93 +1,135 @@
 import { createContext, useContext, useState, useEffect } from "react";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem("token") || null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (token) {
-      setIsLoading(true);
-      const timer = setTimeout(() => {
-        const role = token.includes("admin") ? "ADMIN" : "CLIENT";
-        setUser({
-          id: "mock-user-123",
-          name: role === "ADMIN" ? "Admin Erick" : "Cliente Erick",
-          email: role === "ADMIN" ? "admin@admin.com" : "cliente@cliente.com",
-          role,
-        });
+    const autoLogin = async () => {
+      if (!token) {
         setIsLoading(false);
-      }, 500);
-      return () => clearTimeout(timer);
-    }
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_URL}/auth/me`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setUser(data.user);
+        } else {
+          localStorage.removeItem("token");
+          localStorage.removeItem("refreshToken");
+          setToken(null);
+          setUser(null);
+        }
+      } catch (error) {
+        console.error("Error en auto-login:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    autoLogin();
   }, [token]);
 
   const login = async (email, password) => {
     setIsLoading(true);
     setError(null);
 
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (!email || !password) {
-          setError("Por favor, completa todos los campos.");
-          setIsLoading(false);
-          reject(new Error("Campos incompletos"));
-          return;
-        }
+    try {
+      const response = await fetch(`${API_URL}/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-        const role =
-          email.toLowerCase() === "admin@admin.com" ? "ADMIN" : "CLIENT";
-        const mockToken =
-          role === "ADMIN" ? "mock-jwt-token-admin" : "mock-jwt-token-client";
-        const mockUser = {
-          id: "mock-user-123",
-          name: role === "ADMIN" ? "Admin Erick" : "Cliente Erick",
-          email: email.toLowerCase(),
-          role,
-        };
+      const data = await response.json();
 
-        localStorage.setItem("token", mockToken);
-        setToken(mockToken);
-        setUser(mockUser);
-        setIsLoading(false);
-        resolve(mockUser);
-      }, 1000);
-    });
+      if (!response.ok) {
+        throw new Error(data.message || "Error al iniciar sesión");
+      }
+
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("refreshToken", data.refreshToken);
+
+      setToken(data.token);
+      setUser(data.user);
+      setIsLoading(false);
+      return data.user;
+    } catch (error) {
+      setError(error.message);
+      setIsLoading(false);
+      throw error;
+    }
   };
 
   const register = async (name, email, password) => {
     setIsLoading(true);
     setError(null);
 
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (!name || !email || !password) {
-          setError("Todos los campos son obligatorios.");
-          setIsLoading(false);
-          reject(new Error("Campos incompletos"));
-          return;
-        }
+    try {
+      const response = await fetch(`${API_URL}/auth/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email, password }),
+      });
 
-        setIsLoading(false);
-        resolve({ message: "Registro mock exitoso" });
-      }, 1000);
-    });
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          response.status === 409
+            ? "409"
+            : data.message || "Error al registrarse.",
+        );
+      }
+
+      setIsLoading(false);
+      return data;
+    } catch (error) {
+      setError(error.message);
+      setIsLoading(false);
+      throw error;
+    }
   };
 
   const logout = async () => {
     setIsLoading(true);
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        localStorage.removeItem("token");
-        setToken(null);
-        setUser(null);
-        setIsLoading(false);
-        resolve();
-      }, 500);
-    });
+    const refreshToken = localStorage.getItem("refreshToken");
+
+    try {
+      if (refreshToken) {
+        await fetch(`${API_URL}/auth/logout`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ refreshToken }),
+        });
+      }
+    } catch (error) {
+      console.error("Error al cerrar sesión en el servidor", error);
+    } finally {
+      localStorage.removeItem("token");
+      localStorage.removeItem("refreshToken");
+      setToken(null);
+      setUser(null);
+      setIsLoading(false);
+    }
   };
 
   return (
