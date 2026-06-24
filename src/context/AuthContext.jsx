@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
+
 const API_URL = import.meta.env.VITE_API_URL;
 
 const AuthContext = createContext();
@@ -37,9 +38,8 @@ export const AuthProvider = ({ children }) => {
       } finally {
         setIsLoading(false);
       }
-
-      autoLogin();
     };
+    autoLogin();
   }, [token]);
 
   const login = async (email, password) => {
@@ -91,7 +91,11 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(response.status === 409 ? "409" : data.message || "Error al registrarse.");
+        throw new Error(
+          response.status === 409
+            ? "409"
+            : data.message || "Error al registrarse.",
+        );
       }
 
       setIsLoading(false);
