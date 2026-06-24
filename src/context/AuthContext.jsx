@@ -1,5 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
+
 const API_URL = import.meta.env.VITE_API_URL;
+
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -36,8 +38,8 @@ export const AuthProvider = ({ children }) => {
       } finally {
         setIsLoading(false);
       }
-      };
-      autoLogin();
+    };
+    autoLogin();
   }, [token]);
 
   const login = async (email, password) => {

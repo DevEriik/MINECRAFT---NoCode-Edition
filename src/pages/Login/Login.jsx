@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import FormInput from "../../components/FormInput/FormInput";
 import login from "../../assets/login/login.jpg";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -12,6 +14,8 @@ const Login = () => {
     const [errors, setErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitError, setSubmitError] = useState("");
+    const { login } = useAuth();
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -42,12 +46,17 @@ const Login = () => {
 
         console.log("¡Intentando iniciar sesión con:", formData.email);
 
-        setTimeout(() => {
+        try {
+            await login(formData.email, formData.password);
+            navigate("/"); 
+        } catch (error) {
             setIsSubmitting(false);
-            alert(
-            "¡Simulación de Login exitoso! Próximamente lo conectaremos al estado global.",
-            );
-        }, 1000);
+            if (error.message.includes("401") || error.message.toLowerCase().includes("incorrectos")) {
+            setSubmitError("Email o contraseña incorrectos.");
+            } else {
+            setSubmitError("Error de conexión con el servidor.");
+            }
+        }
         }
     };
 

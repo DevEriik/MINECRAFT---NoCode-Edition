@@ -2,6 +2,8 @@ import { useState } from "react";
 import FormInput from "../../components/FormInput/FormInput";
 import { Link } from "react-router-dom";
 import register from "../../assets/register/register.jpg";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -14,6 +16,8 @@ const Register = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const { register } = useAuth();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -58,13 +62,21 @@ const Register = () => {
       setSubmitError("");
       setSuccessMessage("");
 
-      // --- SIMULACIÓN DE ENVÍO  
-      console.log("¡Datos listos para enviar al Backend!", formData);
-      setTimeout(() => {
+      try {
+        await register(formData.name, formData.email, formData.password);
+        setSuccessMessage("¡Registro exitoso! Redirigiendo...");
+        setTimeout(() => navigate("/login"), 1500); 
+      } catch (error) {
         setIsSubmitting(false);
-        setSuccessMessage("¡Bienvenido, te registraste con éxito! ");
-        setFormData({ name: "", email: "", password: "" });
-      }, 1500);
+        if (
+          error.message.includes("409") ||
+          error.message.toLowerCase().includes("uso")
+        ) {
+          setSubmitError("Este email ya está en uso.");
+        } else {
+          setSubmitError("Error de conexión con el servidor.");
+        }
+      }
 
     }
   };
