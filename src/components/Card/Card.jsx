@@ -1,13 +1,18 @@
-import { useState, useEffect, useTransition } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Notificacion } from "../Notificacion/Notificacion";
 import corazon from "../../assets/corazonRojo/corazon.png";
-import { Translation, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 export const Card = ({ item, onEliminar }) => {
   const [aviso, setAviso] = useState({ mensaje: "", tipo: "" });
   const [esFavorito, setEsFavorito] = useState(false);
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+
+  // MOCK STATE (Cambialo a mano para probar las distintas vistas)
+  // Opciones: null, { name: "Dani", role: "CLIENT" }, { name: "Abril", role: "ADMIN" }
+  const mockUser = { name: "Abril", role: "ADMIN" };
 
   useEffect(() => {
     const favGuardados = JSON.parse(localStorage.getItem("favoritos")) || [];
@@ -25,6 +30,16 @@ export const Card = ({ item, onEliminar }) => {
   const manejarFavorito = (e) => {
     e.preventDefault();
     e.stopPropagation();
+
+    if (!mockUser) {
+      const goToLogin = window.confirm(
+        "⚠️ Debes iniciar sesión para guardar favoritos. ¿Quieres ir al Login ahora?"
+      );
+      if (goToLogin) {
+        navigate("/login");
+      }
+      return; 
+    }
 
     let favGuardados = JSON.parse(localStorage.getItem("favoritos")) || [];
     if (esFavorito) {
@@ -44,8 +59,22 @@ export const Card = ({ item, onEliminar }) => {
     }
 
     setEsFavorito(!esFavorito);
-
     window.dispatchEvent(new Event("favoritesUpdated"));
+  };
+
+  const manejarEditar = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("Navegar a edición del item:", item.id);
+  };
+
+  const manejarEliminarClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const confirmar = window.confirm(`¿Estás seguro de eliminar a ${item.name} de la base de datos?`);
+    if (confirmar && onEliminar) {
+      onEliminar(item.id);
+    }
   };
 
   const esMob = item.health !== undefined;
@@ -53,7 +82,7 @@ export const Card = ({ item, onEliminar }) => {
   return (
     <Link
       to={`/item/${item.id}`}
-      className="block w-full h-[540px] border-4 border-black p-4 bg-gray-800 flex flex-col overflow-hidden shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:bg-gray-700 transition-colors cursor-pointer"
+      className="block w-full min-h-[540px] border-4 border-black p-4 bg-gray-800 flex flex-col overflow-hidden shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] hover:bg-gray-700 transition-colors cursor-pointer"
     >
       <div className="relative h-52 flex-shrink-0 bg-gray-500 flex items-center justify-center mb-4 border-4 border-black">
         <span
@@ -126,6 +155,23 @@ export const Card = ({ item, onEliminar }) => {
           <span className="text-sm text-white font-black uppercase">
             ♡ {t("textFavorite")}
           </span>
+        </div>
+      )}
+
+      {mockUser && mockUser.role === "ADMIN" && (
+        <div className="flex gap-2 mt-3">
+          <button 
+            onClick={manejarEditar}
+            className="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-black uppercase py-2 border-4 border-black transition-transform shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-1 active:translate-y-1 text-xs"
+          >
+            ✏️ Editar
+          </button>
+          <button 
+            onClick={manejarEliminarClick}
+            className="flex-1 bg-red-600 hover:bg-red-500 text-white font-black uppercase py-2 border-4 border-black transition-transform shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-1 active:translate-y-1 text-xs"
+          >
+            🗑️ Eliminar
+          </button>
         </div>
       )}
 

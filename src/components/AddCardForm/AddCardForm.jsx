@@ -104,6 +104,7 @@ const AddCardForm = ({ onEntityCreated }) => {
       setSubmitError("");
 
       let payload = {};
+      console.log("Despues del payload");
       if (entityType === "item") {
         payload = {
           name: formData.name,
@@ -153,6 +154,7 @@ const AddCardForm = ({ onEntityCreated }) => {
 
       try {
         const entidad = entityType === "item" ? "items" : "mobs";
+        console.log("Anteos del payload 2do");
         await create(entidad, payload);
 
         setFormData({
