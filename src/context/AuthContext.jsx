@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-
+const API_URL = import.meta.env.VITE_API_URL;
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -36,9 +36,8 @@ export const AuthProvider = ({ children }) => {
       } finally {
         setIsLoading(false);
       }
-
+      };
       autoLogin();
-    };
   }, [token]);
 
   const login = async (email, password) => {
@@ -79,8 +78,7 @@ export const AuthProvider = ({ children }) => {
     setError(null);
 
     try {
-      const response = await (`${API_URL}/auth/register`,
-      {
+      const response = await fetch(`${API_URL}/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -91,7 +89,11 @@ export const AuthProvider = ({ children }) => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Error al registrarse.");
+        throw new Error(
+          response.status === 409
+            ? "409"
+            : data.message || "Error al registrarse.",
+        );
       }
 
       setIsLoading(false);
