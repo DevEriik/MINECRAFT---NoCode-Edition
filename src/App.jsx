@@ -10,6 +10,8 @@ import ARView from "./pages/ARView/ARView.jsx";
 import NotFound from "./pages/NotFound/NotFound.jsx";
 import Login from "./pages/Login/Login.jsx";
 import Register from "./pages/Register/Register.jsx";
+import AdminPanel from "./pages/AdminPanel/AdminPanel.jsx";
+import AdminRoute from "./components/AdminRoute/AdminRoute.jsx";
 import "./locals/i18n";
 import { AuthProvider } from "./context/AuthContext.jsx";
 
@@ -30,6 +32,14 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="*" element={<NotFound />} />
+              <Route
+                path="/admin"
+                element={
+                  <AdminRoute>
+                    <AdminPanel />
+                  </AdminRoute>
+                }
+              />
             </Routes>
           </main>
 
