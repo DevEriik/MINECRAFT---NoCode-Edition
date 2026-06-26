@@ -2,23 +2,38 @@ import { useState, useEffect } from "react";
 import { Card } from "../../components/Card/Card";
 import { useTranslation } from "react-i18next";
 import corazon from "../../assets/corazonRojo/corazon.png";
+import { getFavorites } from "../../services/api";
 
 export const Favorites = () => {
   const [cardsFavoritas, setCardsFavorites] = useState([]);
+  const [cargando, setCargando] = useState(true);
+  const [error, setError] = useState(false);
   const { t } = useTranslation();
 
   useEffect(() => {
-    const favoritas = JSON.parse(localStorage.getItem("favoritos")) || [];
-    setCardsFavorites(favoritas);
+    const cargarFavoritosDesdeAPI = async () => {
+      try {
+        setCargando(true);
+        const data = await getFavorites();
+        const mappedFavorites = data.map(fav => fav.details).filter(Boolean);
+        setCardsFavorites(mappedFavorites);
+      } catch (err) {
+        console.error("Error al cargar favoritos de la API:", err);
+        setError(true);
+      } finally {
+        setCargando(false);
+      }
+    };
+
+    cargarFavoritosDesdeAPI();
   }, []);
 
   const quitarDeVista = (idParaBorrar) => {
-    setCardsFavorites((carsdActuales) =>
-      carsdActuales.filter((card) => card.id !== idParaBorrar),
+    setCardsFavorites((cardsActuales) =>
+      cardsActuales.filter((card) => card.id !== idParaBorrar),
     );
   };
 
-  // Logica para el panel de estadísticas
   const totalGuardados = cardsFavoritas.length;
   const totalMobs = cardsFavoritas.filter((item) => item.type === "MOB").length;
   const totalItems = cardsFavoritas.filter(
@@ -41,7 +56,21 @@ export const Favorites = () => {
           <hr className="mt-6 border-t-4 border-black opacity-50" />
         </div>
 
-        {cardsFavoritas.length === 0 ? (
+        {cargando ? (
+           <div className="flex flex-col items-center justify-center mt-10 p-10 font-mono">
+             <p className="text-xl font-bold animate-pulse text-white">Cargando inventario...</p>
+           </div>
+        ) : error ? (
+           <div className="flex flex-col items-center justify-center mt-10 border-4 border-black p-10 bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
+             <span className="text-6xl mb-4"> ⚠️ </span>
+             <h3 className="text-2xl font-black text-black uppercase tracking-widest text-center" style={{ textShadow: "none" }}>
+               Error de conexión
+             </h3>
+             <p className="text-gray-600 mt-2 text-lg font-bold text-center" style={{ textShadow: "none" }}>
+               No pudimos conectar con el servidor para cargar tus favoritos.
+             </p>
+           </div>
+        ) : cardsFavoritas.length === 0 ? (
           <div className="flex flex-col items-center justify-center mt-10 border-4 border-black p-10 bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]">
             <span className="text-6xl mb-4 grayscale"> 📦 </span>
             <h3
@@ -59,9 +88,7 @@ export const Favorites = () => {
           </div>
         ) : (
           <>
-            {/* ================= PANEL DE ESTADÍSTICAS ================= */}
             <div className="flex flex-col sm:flex-row gap-4 mb-8 bg-[#333333] border-4 border-black p-4 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] max-w-4xl">
-              {/* Total */}
               <div className="flex-1 border-4 border-black bg-gray-200 p-4 flex flex-col items-center justify-center shadow-inner transition-all duration-200 hover:-translate-y-2 hover:bg-gray-300">
                 <span className="text-4xl md:text-5xl font-black text-black tracking-tighter">
                   {totalGuardados}
@@ -71,7 +98,6 @@ export const Favorites = () => {
                 </span>
               </div>
 
-              {/* Mobs */}
               <div className="flex-1 border-4 border-black bg-green-600 p-4 flex flex-col items-center justify-center transition-all duration-200 hover:-translate-y-2 hover:brightness-110">
                 <span
                   className="text-4xl md:text-5xl font-black text-white tracking-tighter"
@@ -84,7 +110,6 @@ export const Favorites = () => {
                 </span>
               </div>
 
-              {/* Ítems */}
               <div className="flex-1 border-4 border-black bg-cyan-600 p-4 flex flex-col items-center justify-center transition-all duration-200 hover:-translate-y-2 hover:brightness-110">
                 <span
                   className="text-4xl md:text-5xl font-black text-white tracking-tighter"
@@ -98,7 +123,6 @@ export const Favorites = () => {
               </div>
             </div>
 
-            {/* ================= CARDS ================= */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {cardsFavoritas.map((item) => (
                 <Card key={item.id} item={item} onEliminar={quitarDeVista} />

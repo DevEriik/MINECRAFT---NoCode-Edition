@@ -5,6 +5,7 @@ import { getById, getAll } from "../../services/api";
 import styles from "./Details.module.css";
 import ExportPdfButton from "../../components/ExportPdfButton/ExportPdfButton";
 import corazon from "../../assets/corazonRojo/corazon.png";
+import { useAuth } from "../../context/AuthContext";
 
 const Details = () => {
   const { id } = useParams();
@@ -15,6 +16,8 @@ const Details = () => {
   const [error, setError] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const captureRef = useRef(null);
+
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,6 +51,14 @@ const Details = () => {
   }, [item]);
 
   const toggleFavorite = () => {
+    if (!user) {
+      const goToLogin = window.confirm(
+        "⚠️ Debes iniciar sesión para guardar favoritos. ¿Quieres ir al Login ahora?"
+      );
+      if (goToLogin) navigate("/login");
+      return;
+    }
+
     let favorites = JSON.parse(localStorage.getItem("favoritos")) || [];
 
     if (isSaved) {
@@ -60,6 +71,19 @@ const Details = () => {
     setIsSaved(!isSaved);
 
     window.dispatchEvent(new Event("favoritesUpdated"));
+  };
+
+  const handleEdit = () => {
+    console.log("Navegar a edición del item:", item.id);
+  };
+
+  const handleDelete = () => {
+    const confirmar = window.confirm(
+      `¿Estás seguro de eliminar a ${item.name} de forma permanente?`
+    );
+    if (confirmar) {
+      console.log("Eliminando item de la base de datos...");
+    }
   };
 
   if (loading) {
@@ -93,7 +117,6 @@ const Details = () => {
 
   return (
     <div className={styles.detailsContainer}>
-      {/* BOTONERA SUPERIOR */}
       <div className="flex flex-wrap justify-center sm:justify-between items-center gap-3 border-b-4 border-[#000000] pb-4 mb-4">
         <button
           onClick={() => navigate(-1)}
@@ -197,6 +220,28 @@ const Details = () => {
               )}
             </div>
           </div>
+
+          {user && user.role === "ADMIN" && (
+            <div className="border-t-4 border-[#000000] pt-4 mt-2">
+              <h3 className="text-lg font-black text-red-600 uppercase mb-3 flex items-center gap-2">
+                <span>👑</span> Controles de Administrador
+              </h3>
+              <div className="flex gap-3">
+                <button
+                  onClick={handleEdit}
+                  className="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-black uppercase py-3 border-4 border-black transition-transform shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-1 active:translate-y-1 text-sm sm:text-base"
+                >
+                  ✏️ Editar
+                </button>
+                <button
+                  onClick={handleDelete}
+                  className="flex-1 bg-red-600 hover:bg-red-500 text-white font-black uppercase py-3 border-4 border-black transition-transform shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:shadow-none active:translate-x-1 active:translate-y-1 text-sm sm:text-base"
+                >
+                  🗑️ Eliminar
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
