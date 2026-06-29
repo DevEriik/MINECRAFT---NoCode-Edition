@@ -138,26 +138,6 @@ const Header = () => {
           />
         </Link>
 
-        {user && user.role === "ADMIN" && (
-          <Link
-            to="/admin"
-            className={`group relative flex items-center gap-2 text-lg uppercase tracking-wide cursor-pointer transition-all duration-300 hover:-translate-y-1 pb-2 ${
-              location.pathname === "/admin"
-                ? "text-emerald-500 font-black"
-                : "text-gray-700 hover:text-emerald-500"
-            }`}
-          >
-            <span className="text-2xl mb-1">⚙️</span>
-            Panel Admin
-            <span
-              className={`absolute bottom-0 left-0 w-full h-1 bg-emerald-500 transition-transform duration-300 ease-out origin-center ${
-                location.pathname === "/admin"
-                  ? "scale-x-100"
-                  : "scale-x-0 group-hover:scale-x-100"
-              }`}
-            />
-          </Link>
-        )}
       </nav>
       <div className="flex-1 flex justify-end items-center gap-4">
         <div className="hidden lg:flex items-center gap-4">
