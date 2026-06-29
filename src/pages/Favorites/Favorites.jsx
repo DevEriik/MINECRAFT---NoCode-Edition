@@ -4,14 +4,25 @@ import { useTranslation } from "react-i18next";
 import corazon from "../../assets/corazonRojo/corazon.png";
 import { getFavorites } from "../../services/api";
 
+import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+
 export const Favorites = () => {
   const [cardsFavoritas, setCardsFavorites] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState(false);
   const { t } = useTranslation();
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const cargarFavoritosDesdeAPI = async () => {
+      if (!user) {
+        setCardsFavorites([]);
+        setCargando(false);
+        // Opcional: navigate("/login"); si quieres forzar el login
+        return;
+      }
       try {
         setCargando(true);
         const data = await getFavorites();
@@ -26,7 +37,7 @@ export const Favorites = () => {
     };
 
     cargarFavoritosDesdeAPI();
-  }, []);
+  }, [user]);
 
   const quitarDeVista = (idParaBorrar) => {
     setCardsFavorites((cardsActuales) =>
@@ -125,7 +136,7 @@ export const Favorites = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {cardsFavoritas.map((item) => (
-                <Card key={item.id} item={item} onEliminar={quitarDeVista} />
+                <Card key={`${item.type}-${item.id}`} item={item} onEliminar={quitarDeVista} />
               ))}
             </div>
           </>

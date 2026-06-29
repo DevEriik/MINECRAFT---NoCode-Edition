@@ -17,7 +17,7 @@ const fetchWithAuth = async (urlSuffix, options = {}) => {
   });
 
   if (
-    response.status === 401 &&
+    (response.status === 401 || response.status === 403) &&
     !urlSuffix.includes("auth/refresh") &&
     !urlSuffix.includes("auth/login")
   ) {
@@ -145,10 +145,29 @@ export const remove = async (entidad, id) => {
   return response.json();
 };
 
-export const getFavorites = async () => {
-  const response = await fetchWithAuth('favorites');
-  if (!response.ok) throw new Error('Error al obtener la lista de favoritos');
-  return response.json();
+let getFavoritesPromise = null;
+
+export const getFavorites = () => {
+  if (getFavoritesPromise) {
+    return getFavoritesPromise;
+  }
+
+  getFavoritesPromise = fetchWithAuth('favorites')
+    .then(async (response) => {
+      if (!response.ok) {
+        getFavoritesPromise = null;
+        throw new Error('Error al obtener la lista de favoritos');
+      }
+      const data = await response.json();
+      getFavoritesPromise = null;
+      return data;
+    })
+    .catch((err) => {
+      getFavoritesPromise = null;
+      throw err;
+    });
+
+  return getFavoritesPromise;
 };
 
 export const addFavorite = async (id, entityType) => {

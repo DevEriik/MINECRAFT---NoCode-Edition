@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import styles from "./Header.module.css";
 import { useAuth } from "../../context/AuthContext";
+import { getFavorites } from "../../services/api";
 
 import logoImage from "../../assets/logo/logo.svg";
 import corazon from "../../assets/corazonRojo/corazon.png";
@@ -23,20 +24,26 @@ const Header = () => {
     navigate('/login');
   };
 
-  const updateFavCount = () => {
-    const favoritas = JSON.parse(localStorage.getItem("favoritos")) || [];
-    setFavCount(favoritas.length);
+  const updateFavCount = async () => {
+    if (user) {
+      try {
+        const favoritos = await getFavorites();
+        setFavCount(favoritos.length);
+      } catch (error) {
+        console.error("Error al obtener favoritos:", error);
+      }
+    } else {
+      setFavCount(0);
+    }
   };
 
   useEffect(() => {
     updateFavCount();
     window.addEventListener("favoritesUpdated", updateFavCount);
-    window.addEventListener("storage", updateFavCount);
     return () => {
       window.removeEventListener("favoritesUpdated", updateFavCount);
-      window.removeEventListener("storage", updateFavCount);
     };
-  }, []);
+  }, [user]);
 
   const toggleLanguage = () => {
     const currentLang = i18n.language || "es";
@@ -57,7 +64,7 @@ const Header = () => {
           <img
             src={logoImage}
             alt="NoCodeCraft Logo"
-            className="h-10 sm:h-12 md:h-14 w-auto object-contain drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]"
+            className="h-8 sm:h-10 md:h-12 w-auto object-contain drop-shadow-[2px_2px_0px_rgba(0,0,0,1)]"
           />
         </Link>
       </div>
@@ -131,9 +138,14 @@ const Header = () => {
           />
         </Link>
       </nav>
-
-      <div className="flex-1 flex justify-end items-center gap-4">
+    <div className="flex-1 flex justify-end items-center gap-4">
         <div className="hidden lg:flex items-center gap-4">
+          {user && (
+            <span className="font-bold text-gray-800 uppercase tracking-wider">
+              {t('hello_user', { name: user.name })}
+            </span>
+          )}
+
           <button
             onClick={toggleLanguage}
             className="border-4 border-black bg-white text-black px-3 py-1 font-bold text-lg hover:bg-[var(--color-minecraft-grass)] hover:text-white transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1"
@@ -143,14 +155,19 @@ const Header = () => {
 
           {user ? (
             <div className="flex items-center gap-3">
-              <span className="font-bold text-gray-800 uppercase tracking-wider">
-                ¡Hola, {user.name}!
-              </span>
+              {user.role === "ADMIN" && (
+                <Link
+                  to="/admin"
+                  className="border-4 border-black bg-yellow-500 text-black px-3 py-1 font-bold text-lg hover:bg-yellow-400 transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1"
+                >
+                  {t('admin_panel')}
+                </Link>
+              )}
               <button
                 onClick={handleLogout}
                 className="border-4 border-black bg-[#ff3333] text-white px-3 py-1 font-bold text-lg hover:bg-red-700 transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1"
               >
-                Cerrar Sesión
+                {t('logout')}
               </button>
             </div>
           ) : (
@@ -159,13 +176,13 @@ const Header = () => {
                 to="/login"
                 className="border-4 border-black bg-gray-200 text-black px-3 py-1 font-bold text-lg hover:bg-gray-300 transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1"
               >
-                Ingresar
+                {t('login')}
               </Link>
               <Link
                 to="/register"
                 className="border-4 border-black bg-[var(--color-minecraft-grass)] text-white px-3 py-1 font-bold text-lg hover:bg-green-600 transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1"
               >
-                Registro
+                {t('register')}
               </Link>
             </div>
           )}
@@ -210,8 +227,17 @@ const Header = () => {
             {user ? (
               <>
                 <span className="font-bold text-gray-800 uppercase text-center block w-full text-lg">
-                  ¡Hola, {user.name}!
+                  {t('hello_user', { name: user.name })}
                 </span>
+                {user.role === "ADMIN" && (
+                  <Link
+                    to="/admin"
+                    onClick={toggleMenu}
+                    className="border-4 border-black bg-yellow-500 text-black px-4 py-2 font-bold w-full text-center hover:bg-yellow-400 transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-lg block"
+                  >
+                    {t('admin_panel')}
+                  </Link>
+                )}
                 <button
                   onClick={() => {
                     handleLogout();
@@ -219,7 +245,7 @@ const Header = () => {
                   }}
                   className="border-4 border-black bg-[#ff3333] text-white px-4 py-2 font-bold w-full hover:bg-red-700 transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-lg"
                 >
-                  Cerrar Sesión
+                  {t('logout')}
                 </button>
               </>
             ) : (
@@ -229,14 +255,14 @@ const Header = () => {
                   onClick={toggleMenu}
                   className="border-4 border-black bg-gray-200 text-black px-4 py-2 font-bold w-full text-center hover:bg-gray-300 transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-lg block"
                 >
-                  Ingresar
+                  {t('login')}
                 </Link>
                 <Link
                   to="/register"
                   onClick={toggleMenu}
                   className="border-4 border-black bg-[var(--color-minecraft-grass)] text-white px-4 py-2 font-bold w-full text-center hover:bg-green-600 transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-lg block"
                 >
-                  Registro
+                  {t('register')}
                 </Link>
               </>
             )}
