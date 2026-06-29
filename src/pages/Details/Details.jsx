@@ -94,7 +94,8 @@ const Details = () => {
   };
 
   const handleEdit = () => {
-    console.log("Navegar a edición del item:", item.id);
+    const isMob = item.type !== undefined && item.health !== undefined;
+    navigate('/admin', { state: { cardToEdit: { ...item, cardType: isMob ? "Mob" : "Ítem" } } });
   };
 
   const handleDelete = () => {

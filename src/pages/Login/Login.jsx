@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import FormInput from "../../components/FormInput/FormInput";
-import login from "../../assets/login/login.jpg";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
@@ -67,12 +66,7 @@ const Login = () => {
     };
 
     return (
-        <div
-        className="relative w-full min-h-[calc(100vh-100px)] flex items-center justify-center bg-cover bg-center bg-no-repeat py-12"
-        style={{ backgroundImage: `url(${login})` }}
-        >
-
-        <div className="absolute inset-0 bg-black/60 z-0"></div>
+        <div className="bg-gradient-to-r from-[#064E3B] via-[#0F766E] to-[#083344] min-h-[calc(100vh-100px)] w-full flex items-center justify-center py-12">
 
         <div className="relative z-10 max-w-xl mx-auto w-full pl-4 pr-6 sm:px-8">
             <div className="text-center mb-6">

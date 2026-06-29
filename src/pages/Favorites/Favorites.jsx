@@ -136,7 +136,7 @@ export const Favorites = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {cardsFavoritas.map((item) => (
-                <Card key={item.id} item={item} onEliminar={quitarDeVista} />
+                <Card key={`${item.type}-${item.id}`} item={item} onEliminar={quitarDeVista} />
               ))}
             </div>
           </>
