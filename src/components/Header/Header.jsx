@@ -167,12 +167,6 @@ const Header = () => {
             </span>
           )}
 
-          <button
-            onClick={toggleLanguage}
-            className="border-4 border-black bg-white text-black px-3 py-1 font-bold text-lg hover:bg-[var(--color-minecraft-grass)] hover:text-white transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1"
-          >
-            {i18n.language === "es" ? "ES / EN" : "EN / ES"}
-          </button>
 
           {user ? (
             <div className="flex items-center gap-3">
