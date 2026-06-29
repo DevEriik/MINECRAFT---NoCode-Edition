@@ -15,13 +15,13 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [favCount, setFavCount] = useState(0);
   const location = useLocation();
-  const navigate = useNavigate(); 
-  
+  const navigate = useNavigate();
+
   const { user, logout } = useAuth();
 
   const handleLogout = async () => {
     await logout();
-    navigate('/login');
+    navigate("/login");
   };
 
   const updateFavCount = async () => {
@@ -137,12 +137,33 @@ const Header = () => {
             }`}
           />
         </Link>
+
+        {user && user.role === "ADMIN" && (
+          <Link
+            to="/admin"
+            className={`group relative flex items-center gap-2 text-lg uppercase tracking-wide cursor-pointer transition-all duration-300 hover:-translate-y-1 pb-2 ${
+              location.pathname === "/admin"
+                ? "text-emerald-500 font-black"
+                : "text-gray-700 hover:text-emerald-500"
+            }`}
+          >
+            <span className="text-2xl mb-1">⚙️</span>
+            Panel Admin
+            <span
+              className={`absolute bottom-0 left-0 w-full h-1 bg-emerald-500 transition-transform duration-300 ease-out origin-center ${
+                location.pathname === "/admin"
+                  ? "scale-x-100"
+                  : "scale-x-0 group-hover:scale-x-100"
+              }`}
+            />
+          </Link>
+        )}
       </nav>
-    <div className="flex-1 flex justify-end items-center gap-4">
+      <div className="flex-1 flex justify-end items-center gap-4">
         <div className="hidden lg:flex items-center gap-4">
           {user && (
             <span className="font-bold text-gray-800 uppercase tracking-wider">
-              {t('hello_user', { name: user.name })}
+              {t("hello_user", { name: user.name })}
             </span>
           )}
 
@@ -160,14 +181,14 @@ const Header = () => {
                   to="/admin"
                   className="border-4 border-black bg-yellow-500 text-black px-3 py-1 font-bold text-lg hover:bg-yellow-400 transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1"
                 >
-                  {t('admin_panel')}
+                  {t("admin_panel")}
                 </Link>
               )}
               <button
                 onClick={handleLogout}
                 className="border-4 border-black bg-[#ff3333] text-white px-3 py-1 font-bold text-lg hover:bg-red-700 transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1"
               >
-                {t('logout')}
+                {t("logout")}
               </button>
             </div>
           ) : (
@@ -176,16 +197,23 @@ const Header = () => {
                 to="/login"
                 className="border-4 border-black bg-gray-200 text-black px-3 py-1 font-bold text-lg hover:bg-gray-300 transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1"
               >
-                {t('login')}
+                {t("login")}
               </Link>
               <Link
                 to="/register"
                 className="border-4 border-black bg-[var(--color-minecraft-grass)] text-white px-3 py-1 font-bold text-lg hover:bg-green-600 transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1"
               >
-                {t('register')}
+                {t("register")}
               </Link>
             </div>
           )}
+
+          <button
+            onClick={toggleLanguage}
+            className="border-4 border-black bg-white text-black px-3 py-1 font-bold text-lg hover:bg-[var(--color-minecraft-grass)] hover:text-white transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1"
+          >
+            {i18n.language === "es" ? "ES / EN" : "EN / ES"}
+          </button>
         </div>
 
         <button
@@ -201,24 +229,58 @@ const Header = () => {
       {isMenuOpen && (
         <div className={styles.mobileMenu}>
           <div className="flex flex-col gap-4">
-            <Link to="/" onClick={toggleMenu} className={`relative overflow-hidden ${styles.navItem} transition-all duration-300 py-1 ${location.pathname === "/" ? "text-[var(--color-minecraft-grass)] font-black pl-3 bg-gray-100" : "text-gray-700 hover:pl-3"}`}>
-              <span className={`absolute left-0 top-0 w-1 h-full bg-[var(--color-minecraft-grass)] transition-transform duration-300 origin-top ${location.pathname === "/" ? "scale-y-100" : "scale-y-0"}`} />
-              <img src={iconoHome} alt="Home" className="w-7 h-7 inline-block mr-2" />
+            <Link
+              to="/"
+              onClick={toggleMenu}
+              className={`relative overflow-hidden ${styles.navItem} transition-all duration-300 py-1 ${location.pathname === "/" ? "text-[var(--color-minecraft-grass)] font-black pl-3 bg-gray-100" : "text-gray-700 hover:pl-3"}`}
+            >
+              <span
+                className={`absolute left-0 top-0 w-1 h-full bg-[var(--color-minecraft-grass)] transition-transform duration-300 origin-top ${location.pathname === "/" ? "scale-y-100" : "scale-y-0"}`}
+              />
+              <img
+                src={iconoHome}
+                alt="Home"
+                className="w-7 h-7 inline-block mr-2"
+              />
               {t("home")}
             </Link>
 
-            <Link to="/favoritos" onClick={toggleMenu} className={`relative overflow-hidden ${styles.navItem} transition-all duration-300 py-1 ${location.pathname === "/favoritos" ? "text-[#ff3333] font-black pl-3 bg-gray-100" : "text-gray-700 hover:pl-3"}`}>
-              <span className={`absolute left-0 top-0 w-1 h-full bg-[#ff3333] transition-transform duration-300 origin-top ${location.pathname === "/favoritos" ? "scale-y-100" : "scale-y-0"}`} />
+            <Link
+              to="/favoritos"
+              onClick={toggleMenu}
+              className={`relative overflow-hidden ${styles.navItem} transition-all duration-300 py-1 ${location.pathname === "/favoritos" ? "text-[#ff3333] font-black pl-3 bg-gray-100" : "text-gray-700 hover:pl-3"}`}
+            >
+              <span
+                className={`absolute left-0 top-0 w-1 h-full bg-[#ff3333] transition-transform duration-300 origin-top ${location.pathname === "/favoritos" ? "scale-y-100" : "scale-y-0"}`}
+              />
               <div className="relative inline-block mr-2">
-                <img src={corazon} alt="Favoritos" className="w-7 h-7 object-contain" />
-                {favCount > 0 && <span className="absolute -top-1 -right-2 bg-[#ff3333] text-white text-[9px] font-black border-2 border-black w-4 h-4 flex items-center justify-center">{favCount}</span>}
+                <img
+                  src={corazon}
+                  alt="Favoritos"
+                  className="w-7 h-7 object-contain"
+                />
+                {favCount > 0 && (
+                  <span className="absolute -top-1 -right-2 bg-[#ff3333] text-white text-[9px] font-black border-2 border-black w-4 h-4 flex items-center justify-center">
+                    {favCount}
+                  </span>
+                )}
               </div>
               {t("favorites")}
             </Link>
 
-            <Link to="/crear-skin" onClick={toggleMenu} className={`relative overflow-hidden ${styles.navItem} transition-all duration-300 py-1 ${location.pathname === "/crear-skin" ? "text-[var(--color-minecraft-amethyst)] font-black pl-3 bg-gray-100" : "text-gray-700 hover:pl-3"}`}>
-              <span className={`absolute left-0 top-0 w-1 h-full bg-[var(--color-minecraft-amethyst)] transition-transform duration-300 origin-top ${location.pathname === "/crear-skin" ? "scale-y-100" : "scale-y-0"}`} />
-              <img src={iconoSkin} alt="Skins" className="w-7 h-7 inline-block mr-2" />
+            <Link
+              to="/crear-skin"
+              onClick={toggleMenu}
+              className={`relative overflow-hidden ${styles.navItem} transition-all duration-300 py-1 ${location.pathname === "/crear-skin" ? "text-[var(--color-minecraft-amethyst)] font-black pl-3 bg-gray-100" : "text-gray-700 hover:pl-3"}`}
+            >
+              <span
+                className={`absolute left-0 top-0 w-1 h-full bg-[var(--color-minecraft-amethyst)] transition-transform duration-300 origin-top ${location.pathname === "/crear-skin" ? "scale-y-100" : "scale-y-0"}`}
+              />
+              <img
+                src={iconoSkin}
+                alt="Skins"
+                className="w-7 h-7 inline-block mr-2"
+              />
               {t("skin_creator")}
             </Link>
           </div>
@@ -227,7 +289,7 @@ const Header = () => {
             {user ? (
               <>
                 <span className="font-bold text-gray-800 uppercase text-center block w-full text-lg">
-                  {t('hello_user', { name: user.name })}
+                  {t("hello_user", { name: user.name })}
                 </span>
                 {user.role === "ADMIN" && (
                   <Link
@@ -235,7 +297,7 @@ const Header = () => {
                     onClick={toggleMenu}
                     className="border-4 border-black bg-yellow-500 text-black px-4 py-2 font-bold w-full text-center hover:bg-yellow-400 transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-lg block"
                   >
-                    {t('admin_panel')}
+                    {t("admin_panel")}
                   </Link>
                 )}
                 <button
@@ -245,7 +307,7 @@ const Header = () => {
                   }}
                   className="border-4 border-black bg-[#ff3333] text-white px-4 py-2 font-bold w-full hover:bg-red-700 transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-lg"
                 >
-                  {t('logout')}
+                  {t("logout")}
                 </button>
               </>
             ) : (
@@ -255,14 +317,14 @@ const Header = () => {
                   onClick={toggleMenu}
                   className="border-4 border-black bg-gray-200 text-black px-4 py-2 font-bold w-full text-center hover:bg-gray-300 transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-lg block"
                 >
-                  {t('login')}
+                  {t("login")}
                 </Link>
                 <Link
                   to="/register"
                   onClick={toggleMenu}
                   className="border-4 border-black bg-[var(--color-minecraft-grass)] text-white px-4 py-2 font-bold w-full text-center hover:bg-green-600 transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-lg block"
                 >
-                  {t('register')}
+                  {t("register")}
                 </Link>
               </>
             )}
