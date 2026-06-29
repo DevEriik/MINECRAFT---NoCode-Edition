@@ -23,12 +23,13 @@ Esta es una **Multi Pages** diseñada como una enciclopedia interactiva del univ
 
 ### ✨ Características Principales
 
+- **🔒 Seguridad y Control de Roles:** Autenticación robusta utilizando **JWT (JSON Web Tokens)**. Diferenciación de roles (Admin/Client) para proteger rutas y habilitar permisos de edición/eliminación en tiempo real.
+- **👾 Creador de Skins:** Interfaz visual para personalizar un avatar de Minecraft (color de piel, cabello y ropa).
+- **👁️ Realidad Aumentada (AR):** Motor de AR web-based impulsado por **MindAR** y **Three.js**. Los usuarios pueden escanear un código QR generado dinámicamente y visualizar su skin en 3D sobre un marcador físico, sin necesidad de instalar aplicaciones nativas.
 - **🌍 Multi-idioma:** Soporte completo para Español e Inglés (i18next) con persistencia en `localStorage`.
-- **🖱️ Scroll Infinito:** Carga dinámica de elementos desde **MockAPI** para una navegación fluida.
-- **🔍 Buscador Inteligente:** Filtros en tiempo real consultando directamente a la API.
-- **⭐ Sistema de Inventario:** Guarda tus criaturas favoritas (Nether Star) con persistencia local.
+- **🖱️ Scroll Infinito:** Carga dinámica de elementos desde nuestra API para una navegación fluida.
+- **⭐ Sistema de Inventario:** Guarda tus criaturas e ítems favoritos de forma persistente y segura en la base de datos, vinculados a tu sesión.
 - **📱 Diseño Responsive:** Estilizado al 100% con **Tailwind CSS v4**.
-- **🚫 Error 404 Personalizado:** Pantalla temática "Te caíste al vacío" para rutas inexistentes.
 
 ---
 
@@ -38,6 +39,9 @@ Esta es una **Multi Pages** diseñada como una enciclopedia interactiva del univ
 ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)
 ![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens)
+![Threejs](https://img.shields.io/badge/threejs-black?style=for-the-badge&logo=three.js&logoColor=white)
+![MindAR](https://img.shields.io/badge/MindAR-AR_Web-blueviolet?style=for-the-badge)
 
 ---
 
@@ -70,12 +74,16 @@ Siguiendo los lineamientos de la cátedra, el proyecto se organiza de la siguien
 
 ```text
 ├── src/
-│   ├── Components/        # Componentes reutilizables (Card, Header, Footer)
-│   ├── Pages/             # Vistas principales (Home, Details, Favorites, NotFound)
-│   ├── services/          # Lógica de Fetch y configuración de MockAPI
+│   ├── components/        # Componentes reutilizables (Card, Header, ARBanner, SkinRender)
+│   ├── pages/             # Vistas principales (Home, Details, Favorites, CreateSkin)
+│   ├── context/           # Estado Global (AuthContext)
+│   ├── services/          # Lógica de Fetch, Interceptores de Axios y conexión a la API
 │   ├── locales/           # Archivos de traducción (ES/EN)
-│   ├── App.jsx            # Enrutador principal
+│   ├── utils/             # Funciones de apoyo (construcción de mallas 3D para AR)
+│   ├── App.jsx            # Enrutador principal y protección de rutas
 │   └── main.jsx           # Punto de entrada
+├── public/
+│   └── avatars/           # Archivos target.mind para el tracking de AR
 ├── CODEOWNERS             # Reglas de protección de ramas
 └── tailwind.config.js     # Configuración de estilos
 ```
