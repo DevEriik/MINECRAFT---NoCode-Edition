@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import AddCardForm from "../../components/AddCardForm/AddCardForm";
 import AlertModal from "../../components/AlertModal/AlertModal"; 
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 const AdminPanel = () => {
+    const location = useLocation();
     const [cards, setCards] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [cardToEdit, setCardToEdit] = useState(null);
+    const [cardToEdit, setCardToEdit] = useState(location.state?.cardToEdit || null);
     const [modalConfig, setModalConfig] = useState({
         isOpen: false,
         type: "confirm", 
@@ -44,6 +46,15 @@ const AdminPanel = () => {
     useEffect(() => {
         fetchCards();
     }, []);
+
+    useEffect(() => {
+        if (location.state?.cardToEdit) {
+            setCardToEdit(location.state.cardToEdit);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            
+            window.history.replaceState({}, document.title);
+        }
+    }, [location.state]);
 
     const openDeleteModal = (id, type) => {
         setModalConfig({

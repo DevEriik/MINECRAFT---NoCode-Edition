@@ -76,4 +76,9 @@ export const en = {
   download_png_text: "Your skin will be downloaded in PNG format",
   short: "Short",
   high: "High",
+  login: "Login",
+  register: "Register",
+  logout: "Logout",
+  hello_user: "Hello, {{name}}!",
+  admin_panel: "Admin Panel",
 };

@@ -84,7 +84,7 @@ export const Card = ({ item, onEliminar }) => {
   const manejarEditar = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log("Navegar a edición del item:", item.id);
+    navigate('/admin', { state: { cardToEdit: { ...item, cardType: esMob ? "Mob" : "Ítem" } } });
   };
 
   const manejarEliminarClick = (e) => {

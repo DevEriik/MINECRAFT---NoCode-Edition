@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { getById, getAll } from "../../services/api";
+import { getById, getAll, getFavorites, addFavorite, removeFavorite } from "../../services/api";
 import styles from "./Details.module.css";
 import ExportPdfButton from "../../components/ExportPdfButton/ExportPdfButton";
 import corazon from "../../assets/corazonRojo/corazon.png";
@@ -43,14 +43,27 @@ const Details = () => {
   }, [id]);
 
   useEffect(() => {
-    if (item) {
-      const favorites = JSON.parse(localStorage.getItem("favoritos")) || [];
-      const exists = favorites.some((fav) => fav.id === item.id);
-      setIsSaved(exists);
-    }
-  }, [item]);
+    const checkFavorite = async () => {
+      if (item && user) {
+        try {
+          const favorites = await getFavorites();
+          const exists = favorites.some((fav) => fav.details && fav.details.id === item.id);
+          setIsSaved(exists);
+        } catch (error) {
+          console.error("Error al verificar favorito:", error);
+        }
+      }
+    };
+    checkFavorite();
 
-  const toggleFavorite = () => {
+    const handleUpdate = () => checkFavorite();
+    window.addEventListener("favoritesUpdated", handleUpdate);
+    return () => window.removeEventListener("favoritesUpdated", handleUpdate);
+  }, [item, user]);
+
+  const [cargandoFav, setCargandoFav] = useState(false);
+
+  const toggleFavorite = async () => {
     if (!user) {
       const goToLogin = window.confirm(
         "⚠️ Debes iniciar sesión para guardar favoritos. ¿Quieres ir al Login ahora?"
@@ -59,22 +72,30 @@ const Details = () => {
       return;
     }
 
-    let favorites = JSON.parse(localStorage.getItem("favoritos")) || [];
+    if (cargandoFav) return;
+    setCargandoFav(true);
 
-    if (isSaved) {
-      favorites = favorites.filter((fav) => fav.id !== item.id);
-    } else {
-      favorites.push(item);
+    try {
+      const entityTypeStr = item.type === "ITEM" ? "item" : "mob";
+      if (isSaved) {
+        await removeFavorite(item.id, entityTypeStr);
+        setIsSaved(false);
+      } else {
+        await addFavorite(item.id, entityTypeStr);
+        setIsSaved(true);
+      }
+      window.dispatchEvent(new Event("favoritesUpdated"));
+    } catch (error) {
+      console.error("Error al hacer toggle de favorito:", error);
+      alert("Hubo un error al guardar en favoritos. Intenta de nuevo.");
+    } finally {
+      setCargandoFav(false);
     }
-
-    localStorage.setItem("favoritos", JSON.stringify(favorites));
-    setIsSaved(!isSaved);
-
-    window.dispatchEvent(new Event("favoritesUpdated"));
   };
 
   const handleEdit = () => {
-    console.log("Navegar a edición del item:", item.id);
+    const isMob = item.type !== undefined && item.health !== undefined;
+    navigate('/admin', { state: { cardToEdit: { ...item, cardType: isMob ? "Mob" : "Ítem" } } });
   };
 
   const handleDelete = () => {
